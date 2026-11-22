@@ -3,285 +3,876 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bàn Cờ Tuần Hoàn - Hóa Học 10 | Gamification THPT Bùi Thị Xuân</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>Bàn Cờ Tuần Hoàn — Đấu Trường Nguyên Tố Hóa Học 10</title>
+  <style>
+    :root {
+      --bg-color: #0b1329;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --accent: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      background: linear-gradient(90deg, #1e1b4b 0%, #1e293b 50%, #0f172a 100%);
+      border-bottom: 2px solid #38bdf8;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .header-title h1 {
+      font-size: 1.4rem;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-title p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .header-controls {
+      display: flex;
+      gap: 12px;
+    }
+    button.btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background: #38bdf8; color: #0f172a; }
+    .btn-primary:hover { background: #7dd3fc; transform: translateY(-1px); }
+    .btn-warning { background: #f59e0b; color: #0f172a; }
+    .btn-warning:hover { background: #fbbf24; }
+    .btn-secondary { background: #334155; color: #f8fafc; }
+    .btn-secondary:hover { background: #475569; }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      padding: 20px;
+      flex: 1;
+    }
+
+    .board-container {
+      background: #0f172a;
+      border: 3px solid #1e3a8a;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(6, 120px);
+      gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    .cell {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .cell:hover {
+      transform: scale(1.03);
+      z-index: 10;
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    .cell.active-cell {
+      border-color: #f59e0b !important;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.8) !important;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .cat-start { background: #064e3b; border-color: #10b981; }
+    .cat-alkali { background: #450a0a; border-color: #ef4444; }
+    .cat-alkaline { background: #451a03; border-color: #f59e0b; }
+    .cat-halogen { background: #082f49; border-color: #0ea5e9; }
+    .cat-noble { background: #1e1b4b; border-color: #6366f1; }
+    .cat-nonmetal { background: #052e16; border-color: #22c55e; }
+    .cat-metalloid { background: #3a2e05; border-color: #eab308; }
+    .cat-special { background: #500724; border-color: #ec4899; }
+
+    .cell-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .cell-num {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+    .cell-xp {
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #facc15;
+      font-size: 0.75rem;
+    }
+    .cell-symbol {
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1;
+      margin: 4px 0 2px 0;
+      color: #ffffff;
+    }
+    .cell-name {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cell-sub {
+      font-size: 0.65rem;
+      color: #94a3b8;
+    }
+
+    .cell-tokens {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      min-height: 18px;
+    }
+    .token-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .t-team-1 { background: #ef4444; }
+    .t-team-2 { background: #3b82f6; }
+    .t-team-3 { background: #10b981; }
+    .t-team-4 { background: #f59e0b; }
+    .t-team-5 { background: #8b5cf6; }
+    .t-team-6 { background: #ec4899; }
+
+    .center-arena {
+      grid-column: 2 / 8;
+      grid-row: 2 / 6;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 2px dashed #f59e0b;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .center-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #facc15;
+      text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+    }
+    .center-desc {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      max-width: 600px;
+      line-height: 1.4;
+    }
+
+    .dice-action-area {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin: 15px 0;
+    }
+    .dice-cube {
+      width: 80px;
+      height: 80px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #0f172a;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 -4px 0 #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+    }
+    .dice-cube:hover { transform: scale(1.08) rotate(5deg); }
+    .dice-cube.rolling {
+      animation: roll 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes roll {
+      0% { transform: rotate(0deg) scale(0.9); }
+      100% { transform: rotate(360deg) scale(1.1); }
+    }
+    .turn-status { text-align: left; }
+    .turn-team {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .turn-guide { font-size: 0.9rem; color: #94a3b8; margin-top: 4px; }
+
+    .quick-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+    .leg-item { display: flex; align-items: center; gap: 5px; }
+    .leg-badge { width: 12px; height: 12px; border-radius: 3px; }
+
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .panel {
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .panel h2 {
+      font-size: 1.1rem;
+      color: #38bdf8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .team-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #0f172a;
+      margin-bottom: 8px;
+      border-left: 4px solid #fff;
+      transition: all 0.2s;
+    }
+    .team-item.current-turn {
+      background: #1e3a8a;
+      border-left-width: 6px;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .team-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .team-xp { font-weight: 800; color: #facc15; font-size: 1.05rem; }
+    .team-pos { font-size: 0.8rem; color: #94a3b8; }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    .modal-card {
+      background: #1e293b;
+      border: 3px solid #f59e0b;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 640px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .card-badge {
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: #f59e0b;
+      color: #0f172a;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .timer-bar-container {
+      width: 100%;
+      height: 10px;
+      background: #334155;
+      border-radius: 5px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      background: #10b981;
+      transition: width 1s linear, background-color 0.3s;
+    }
+    .timer-text {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #facc15;
+      font-weight: bold;
+      margin-top: -12px;
+      margin-bottom: 10px;
+    }
+    .question-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+    .answer-box {
+      background: #1e3a8a;
+      border: 1px solid #38bdf8;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #e0f2fe;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .btn-success { background: #10b981; color: #fff; }
+    .btn-success:hover { background: #059669; }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-['Be_Vietnam_Pro'] antialiased select-none">
+<body>
 
-  <!-- TOP HEADER -->
-  <header class="bg-slate-900/90 border-b border-slate-800 backdrop-blur sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between shadow-lg">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center font-black text-xl shadow-md text-white">
-        🎲
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-extrabold text-base md:text-lg tracking-wide bg-gradient-to-r from-amber-400 via-orange-300 to-rose-400 bg-clip-text text-transparent uppercase">
-            Bàn Cờ Tuần Hoàn - Hóa Học 10
-          </h1>
-          <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
-            Gamification 2026
-          </span>
-        </div>
-        <p class="text-xs text-slate-400">
-          Sở GD&ĐT Lâm Đồng • THPT Bùi Thị Xuân - Mũi Né • GV: Nguyễn Vỹ & Lê Đình Lục
-        </p>
-      </div>
+  <header>
+    <div class="header-title">
+      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10</h1>
+      <p>Trường THPT Bùi Thị Xuân – Mũi Né (Lâm Đồng) • Học cụ Gamification Chủ đề Cấu tạo Bảng tuần hoàn</p>
     </div>
-
-    <!-- Right Actions -->
-    <div class="flex items-center gap-2">
-      <!-- Active Turn Indicator -->
-      <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
-        <span class="text-slate-400">Lượt chơi:</span>
-        <span id="currentTeamBadge" class="font-bold px-2 py-0.5 rounded text-white bg-rose-600">Đội 1</span>
-      </div>
-
-      <!-- Sound Toggle -->
-      <button id="btnSound" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" title="Bật/Tắt âm thanh">
-        🔊
-      </button>
-
-      <!-- Fullscreen Toggle -->
-      <button id="btnFullscreen" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition shadow flex items-center gap-1.5">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-        <span>Toàn màn hình</span>
-      </button>
+    <div class="header-controls">
+      <button class="btn btn-secondary" onclick="resetGame()">🔄 Ván mới</button>
+      <button class="btn btn-warning" onclick="toggleAudio()">🔊 Âm thanh</button>
+      <button class="btn btn-primary" onclick="toggleFullScreen()">🖥️ Toàn màn hình</button>
     </div>
   </header>
 
-  <!-- MAIN BODY LAYOUT -->
-  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 max-w-[1920px] mx-auto w-full">
+  <div class="main-layout">
+    <div class="board-container">
+      <div class="board-grid" id="boardGrid"></div>
+    </div>
 
-    <!-- LEFT & CENTER: TRACK BOARD (Col 8) -->
-    <section class="lg:col-span-8 flex flex-col gap-3">
-      <!-- BOARD CANVAS / GRID CONTAINER -->
-      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-3 shadow-xl backdrop-blur relative overflow-hidden flex-1 flex flex-col">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800 text-xs text-slate-400">
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-amber-400">ĐƯỜNG ĐUA 24 Ô NGUYÊN TỐ NHÓM A</span>
-            <span class="text-slate-500">• Chu kỳ 1, 2, 3</span>
+    <div class="sidebar">
+      <div class="panel">
+        <h2>🎲 LƯỢT CHƠI HIỆN TẠI</h2>
+        <div style="text-align: center; margin: 10px 0;">
+          <div class="turn-team" id="sidebarTurnTeam">
+            <span class="token-dot t-team-1" style="width:22px; height:22px;">1</span>
+            <span>Nhóm 1</span>
           </div>
-          <div class="flex items-center gap-3">
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 10 XP</span>
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 20 XP</span>
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> 30 XP</span>
-            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> May mắn</span>
-          </div>
-        </div>
-
-        <!-- 24 TILES BOARD GRID (4 rows of 6 or responsive wrap) -->
-        <div id="boardTrack" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 my-auto py-2">
-          <!-- Generated via JS -->
-        </div>
-
-        <!-- BOTTOM CONTROLS QUICK BAR -->
-        <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-          <div id="statusMessage" class="font-semibold text-amber-300 truncate">
-            Sẵn sàng! Bấm nút "Tung Xúc Xắc" để bắt đầu lượt chơi.
-          </div>
-          <div class="flex items-center gap-2 shrink-0">
-            <button id="btnResetBoard" class="hover:text-rose-400 transition underline">
-              Đặt lại vị trí quân cờ
+          <div style="margin: 15px 0;">
+            <button class="btn btn-primary" style="width:100%; padding: 12px; font-size:1.1rem; justify-content:center;" onclick="rollDice()">
+              🎲 QUAY XÚC XẮC NGAY
             </button>
           </div>
+          <p id="turnGuideText" style="font-size:0.85rem; color:#94a3b8;">Bấm nút để quay xúc xắc và di chuyển quân cờ</p>
         </div>
       </div>
 
-      <!-- CHALLENGE CARDS DRAWER QUICK BUTTONS -->
-      <div class="grid grid-cols-3 gap-2.5">
-        <button onclick="openCardByType(10)" class="bg-gradient-to-r from-emerald-900/50 to-teal-900/50 hover:from-emerald-800/60 hover:to-teal-800/60 border border-emerald-500/40 rounded-xl p-2.5 flex items-center gap-3 text-left transition group shadow">
-          <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black text-lg group-hover:scale-110 transition">
-            10
-          </div>
-          <div>
-            <div class="font-bold text-emerald-300 text-sm">Thẻ Dễ (+10 XP)</div>
-            <div class="text-[11px] text-slate-400">Vị trí ô, chu kỳ, nhóm & cấu hình e</div>
-          </div>
-        </button>
-
-        <button onclick="openCardByType(20)" class="bg-gradient-to-r from-amber-900/50 to-orange-900/50 hover:from-amber-800/60 hover:to-orange-800/60 border border-amber-500/40 rounded-xl p-2.5 flex items-center gap-3 text-left transition group shadow">
-          <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-lg group-hover:scale-110 transition">
-            20
-          </div>
-          <div>
-            <div class="font-bold text-amber-300 text-sm">Thẻ Trung Bình (+20 XP)</div>
-            <div class="text-[11px] text-slate-400">Bán kính nguyên tử & độ âm điện</div>
-          </div>
-        </button>
-
-        <button onclick="openCardByType(30)" class="bg-gradient-to-r from-rose-900/50 to-pink-900/50 hover:from-rose-800/60 hover:to-pink-800/60 border border-rose-500/40 rounded-xl p-2.5 flex items-center gap-3 text-left transition group shadow">
-          <div class="w-10 h-10 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-black text-lg group-hover:scale-110 transition">
-            30
-          </div>
-          <div>
-            <div class="font-bold text-rose-300 text-sm">Thẻ Vận Dụng (+30 XP)</div>
-            <div class="text-[11px] text-slate-400">Quy luật biến đổi Acid / Base chu kỳ 3</div>
-          </div>
-        </button>
-      </div>
-    </section>
-
-    <!-- RIGHT PANEL: 3D DICE + TIMER + LEADERBOARD (Col 4) -->
-    <aside class="lg:col-span-4 flex flex-col gap-3">
-      
-      <!-- CONTROLS BOX: 3D DICE & 45S TIMER -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 shadow-xl backdrop-blur flex flex-col gap-3">
-        
-        <!-- SECTION TITLE -->
-        <div class="flex items-center justify-between text-xs font-bold text-slate-300 border-b border-slate-800 pb-1.5">
-          <span>🎮 ĐIỀU HÀNH LƯỢT CHƠI</span>
-          <span class="text-amber-400">Tivi Lớp Học</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 items-center">
-          
-          <!-- 3D DICE BOX -->
-          <div class="flex flex-col items-center justify-center bg-slate-950/60 rounded-xl p-3 border border-slate-800">
-            <div class="dice-scene mb-2">
-              <div id="dice" class="dice show-1">
-                <div class="dice-face front">1</div>
-                <div class="dice-face back">6</div>
-                <div class="dice-face right">2</div>
-                <div class="dice-face left">5</div>
-                <div class="dice-face top">3</div>
-                <div class="dice-face bottom">4</div>
-              </div>
-            </div>
-            
-            <button id="btnRollDice" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-extrabold text-xs py-2 px-3 rounded-lg shadow-lg shadow-orange-950/50 active:scale-95 transition flex items-center justify-center gap-1.5">
-              <span>🎲 TUNG XÚC XẮC</span>
-            </button>
-            <div id="diceResultText" class="text-[11px] font-bold text-amber-300 mt-1 h-4">
-              Điểm: 1
-            </div>
-          </div>
-
-          <!-- 45S COUNTDOWN TIMER -->
-          <div class="flex flex-col items-center justify-center bg-slate-950/60 rounded-xl p-3 border border-slate-800">
-            <!-- Circular / Digital Timer Display -->
-            <div class="relative w-16 h-16 flex items-center justify-center mb-1">
-              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path id="timerCircle" class="text-amber-500 transition-all duration-300" stroke-width="3" stroke-dasharray="100, 100" stroke-linecap="round" stroke="currentColor" fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              </svg>
-              <span id="timerText" class="absolute font-mono text-xl font-black text-amber-400">45</span>
-            </div>
-
-            <!-- Timer Action Buttons -->
-            <div class="grid grid-cols-2 gap-1.5 w-full">
-              <button id="btnStartTimer" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] py-1 px-1.5 rounded transition">
-                Bắt đầu
-              </button>
-              <button id="btnResetTimer" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold text-[11px] py-1 px-1.5 rounded transition">
-                Đặt lại 45s
-              </button>
-            </div>
-            <div class="text-[10px] text-slate-400 mt-1">Học sinh thảo luận & trả lời</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- LEADERBOARD & SCORE MANAGEMENT -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 shadow-xl backdrop-blur flex-1 flex flex-col">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2.5">
-          <h2 class="font-bold text-xs uppercase tracking-wide text-slate-300 flex items-center gap-1.5">
-            🏆 BẢNG ĐIỂM THI ĐUA XP CÁC ĐỘI
-          </h2>
-          <button id="btnCelebrate" class="text-xs bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30 px-2 py-0.5 rounded font-bold transition">
-            🎉 Vinh danh
-          </button>
-        </div>
-
-        <!-- TEAMS LIST -->
-        <div id="teamsList" class="flex flex-col gap-2 flex-1">
-          <!-- Rendered via JS -->
-        </div>
-
-        <!-- QUICK PASS TURN BUTTON -->
-        <div class="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between">
-          <button id="btnNextTurn" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
-            <span>Chuyển lượt cho Đội tiếp theo ➔</span>
-          </button>
+      <div class="panel" style="flex:1;">
+        <h2>🏆 BẢNG ĐIỂM XP TRỰC TIẾP</h2>
+        <div id="teamsList"></div>
+        <div style="margin-top: 15px; border-top: 1px solid #334155; padding-top: 12px;">
+          <h4 style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">Cơ chế cộng/trừ điểm:</h4>
+          <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.4;">
+            • Trả lời đúng: Nhận trọn +XP của ô.<br>
+            • Trả lời sai: Đội bạn giơ cờ cướp điểm.<br>
+            • Cướp đúng: Nhận trọn XP | Sai: Trừ 10 XP.
+          </p>
         </div>
       </div>
-
-    </aside>
-
-  </main>
-
-  <!-- MODAL: CHALLENGE CARD (THẺ THỬ THÁCH) -->
-  <div id="cardModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-5 shadow-2xl relative flex flex-col gap-4 animate-scale-in">
-      
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <div class="flex items-center gap-2">
-          <span id="modalCardBadge" class="px-2.5 py-1 rounded-lg font-black text-xs text-white bg-amber-600">
-            THẺ 20 XP
-          </span>
-          <span id="modalCardElement" class="text-xs text-slate-400 font-semibold">
-            Ô số 8 • Oxygen (O)
-          </span>
-        </div>
-        <button onclick="closeCardModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <!-- Question Text -->
-      <div class="py-2">
-        <div class="text-xs text-slate-400 font-medium mb-1">CÂU HỎI THỬ THÁCH (45 GIÂY):</div>
-        <div id="modalQuestionText" class="text-base sm:text-lg font-bold text-slate-100 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800">
-          Câu hỏi mẫu...
-        </div>
-      </div>
-
-      <!-- Rubric / Hint Section (Collapsible) -->
-      <div class="bg-slate-800/50 rounded-xl p-3 border border-slate-700/60">
-        <div class="flex items-center justify-between cursor-pointer" onclick="toggleRubricHint()">
-          <span class="text-xs font-bold text-amber-400 flex items-center gap-1">
-            💡 Gợi ý đáp án & Tiêu chí chấm Rubric (Nhóm đối thủ theo dõi)
-          </span>
-          <span id="hintArrow" class="text-xs text-slate-400">▼ Xem</span>
-        </div>
-        <div id="modalHintContent" class="text-xs text-slate-300 mt-2.5 pt-2 border-t border-slate-700 hidden leading-relaxed">
-          Gợi ý chi tiết...
-        </div>
-      </div>
-
-      <!-- Footer Scoring Buttons -->
-      <div class="flex items-center justify-between pt-2 border-t border-slate-800 gap-2">
-        <div class="text-xs text-slate-400">
-          Cộng điểm cho: <b id="scoringTeamName" class="text-amber-300">Đội 1</b>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="btnAwardPoints" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition shadow flex items-center gap-1">
-            ✅ Trả lời đúng (+XP)
-          </button>
-          <button id="btnStealPoints" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs py-2 px-3 rounded-lg transition shadow flex items-center gap-1">
-            ⚡ Đội khác cướp điểm
-          </button>
-          <button onclick="closeCardModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition">
-            Đóng
-          </button>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <div class="modal-overlay" id="cardModal">
+    <div class="modal-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge" id="modalBadge">THẺ SỐ 14: +20 XP</span>
+          <span style="font-size: 0.9rem; color: #94a3b8; margin-left: 10px;" id="modalTeamName">Lượt: Nhóm 1</span>
+        </div>
+        <div class="card-title" id="modalElementTitle">Ô 14: Sodium (Na)</div>
+      </div>
+
+      <div class="timer-bar-container">
+        <div class="timer-bar" id="timerBar"></div>
+      </div>
+      <div class="timer-text" id="timerText">⏱️ Thời gian hội ý: 45s</div>
+
+      <div class="question-box" id="modalQuestion"></div>
+
+      <div class="answer-box" id="modalAnswer"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="toggleAnswer()">👁️ Hiện đáp án / Gợi ý</button>
+        <button class="btn btn-danger" onclick="resolveTurn(false)">❌ Trả lời SAI / Bị cướp</button>
+        <button class="btn btn-success" onclick="resolveTurn(true)">✅ Trả lời ĐÚNG (+XP)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let audioEnabled = true;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playBeep(freq, type, duration) {
+      if (!audioEnabled) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      alert(audioEnabled ? "Đã bật âm thanh hiệu ứng!" : "Đã tắt âm thanh.");
+    }
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    // 24 Board Spaces - 100% PURE CHAPTER 2 (CHUẨN CHƯƠNG 2 HÓA 10)
+    const boardSpaces = [
+      // Top row (0..7) -> Ô 01..08
+      { num: 1, type: 'start', name: 'XUẤT PHÁT', sym: '🏁', cat: 'cat-start', xp: 20, desc: 'Cổng Phòng Thí Nghiệm\n+20 XP Khởi động', q: 'Nêu 3 nguyên tắc sắp xếp các nguyên tố hóa học trong bảng tuần hoàn hiện đại?', a: '1. Sắp xếp theo chiều tăng dần của điện tích hạt nhân nguyên tử.\n2. Các nguyên tố có cùng số lớp electron được xếp vào cùng một chu kì.\n3. Các nguyên tố có cùng số electron hóa trị được xếp vào cùng một nhóm.' },
+      { num: 2, z: 1, sym: 'H', name: 'Hydrogen', cat: 'cat-nonmetal', xp: 10, sub: 'CK 1 • Nhóm IA', q: 'Viết cấu hình electron của nguyên tử Hydrogen (Z=1)? Nêu vị trí (ô, chu kỳ, nhóm) của H trong bảng tuần hoàn?', a: 'Cấu hình: 1s¹. Vị trí: Ô số 1, Chu kỳ 1 (có 1 lớp e), Nhóm IA (1e hóa trị).' },
+      { num: 3, z: 2, sym: 'He', name: 'Helium', cat: 'cat-noble', xp: 10, sub: 'CK 1 • Nhóm VIIIA', q: 'Helium chỉ có 2 electron nhưng vì sao lại được xếp vào nhóm VIIIA mà không phải nhóm IIA?', a: 'Vì lớp electron thứ nhất của He đã bão hòa tối đa 2e (cấu hình vỏ bền vững của khí hiếm).' },
+      { num: 4, type: 'special', sym: '⚡', name: 'HÀO QUANG KHÍ HIẾM', cat: 'cat-special', xp: 15, desc: 'Cấu hình 8e bền vững!\nMiễn trừ điểm • +15 XP', q: 'Nhóm VIIIA (nhóm khí hiếm) nằm ở vị trí nào trong BTH? Nêu đặc điểm cấu hình electron lớp ngoài cùng của các nguyên tử khí hiếm giúp chúng rất bền vững và trơ về mặt hóa học?', a: 'Vị trí: Nằm ở cột tận cùng bên phải, kết thúc mỗi chu kì. Ngoại trừ He có 2e bão hòa (1s²), các nguyên tử khí hiếm còn lại đều có 8 electron bão hòa ở lớp ngoài cùng (ns² np⁶) vô cùng bền vững, nên chúng trơ về mặt hóa học.' },
+      { num: 5, z: 3, sym: 'Li', name: 'Lithium', cat: 'cat-alkali', xp: 10, sub: 'CK 2 • Nhóm IA', q: 'Nguyên tử Lithium có mấy lớp electron và mấy electron lớp ngoài cùng? Li là kim loại hay phi kim?', a: 'Cấu hình: 1s² 2s¹. Có 2 lớp e (Chu kỳ 2), 1e ngoài cùng (Nhóm IA). Li là kim loại kiềm.' },
+      { num: 6, z: 4, sym: 'Be', name: 'Beryllium', cat: 'cat-alkaline', xp: 10, sub: 'CK 2 • Nhóm IIA', q: 'Beryllium thuộc nhóm nào? Hóa trị cao nhất của Beryllium với Oxygen là mấy? Viết công thức oxide?', a: 'Be thuộc nhóm IIA (Kiềm thổ). Hóa trị cao nhất với oxygen là II. Công thức oxide: BeO.' },
+      { num: 7, z: 5, sym: 'B', name: 'Boron', cat: 'cat-metalloid', xp: 10, sub: 'CK 2 • Nhóm IIIA', q: 'Nguyên tố Boron (Z=5) là nguyên tố họ s, p, d hay f? Viết cấu hình electron của Boron?', a: 'Cấu hình: 1s² 2s² 2p¹. Boron là nguyên tố họ p vì electron cuối cùng điền vào phân lớp p.' },
+      { num: 8, z: 6, sym: 'C', name: 'Carbon', cat: 'cat-nonmetal', xp: 10, sub: 'CK 2 • Nhóm IVA', q: 'Nguyên tử Carbon có bao nhiêu electron hóa trị? Viết công thức oxide cao nhất của Carbon?', a: 'Có 4 electron hóa trị (2s² 2p²). Công thức oxide cao nhất là CO2.' },
+
+      // Right col (8..11) -> Ô 09..12
+      { num: 9, z: 7, sym: 'N', name: 'Nitrogen', cat: 'cat-nonmetal', xp: 20, sub: 'CK 2 • Nhóm VA', q: 'So sánh độ âm điện giữa N (Z=7) và C (Z=6)? Giải thích nguyên nhân dựa vào cấu tạo nguyên tử?', a: 'Độ âm điện N > C. Giải thích: Cùng chu kỳ 2, theo chiều tăng Z, lực hút hạt nhân tăng làm độ âm điện tăng.' },
+      { num: 10, z: 8, sym: 'O', name: 'Oxygen', cat: 'cat-nonmetal', xp: 20, sub: 'CK 2 • Nhóm VIA', q: 'Trong toàn bộ bảng tuần hoàn, nguyên tố nào có độ âm điện lớn thứ 2 (chỉ sau Fluorine)? Nêu giá trị xấp xỉ?', a: 'Là Oxygen (O), độ âm điện xấp xỉ 3.44 theo thang Pauling.' },
+      { num: 11, z: 9, sym: 'F', name: 'Fluorine', cat: 'cat-halogen', xp: 20, sub: 'CK 2 • Nhóm VIIA', q: 'Vì sao Fluorine lại là phi kim mạnh nhất và có độ âm điện lớn nhất (3.98) trong toàn bộ BTH?', a: 'Thuộc chu kỳ 2 có bán kính rất nhỏ (2 lớp e), 7e lớp ngoài cùng, lực hút hạt nhân với e nhận vào cực mạnh.' },
+      { num: 12, type: 'special', sym: '🌀', name: 'BẪY BÁN KÍNH', cat: 'cat-special', xp: 20, desc: 'Lực hút hạt nhân mạnh!\nTrả lời đúng nhận +20 XP', q: 'Trong một chu kỳ và trong một nhóm A, bán kính nguyên tử biến đổi theo quy luật nào? Chỉ ra nguyên nhân của mỗi trường hợp?', a: 'Trong chu kỳ: bán kính giảm dần (do Z tăng, số lớp e không đổi). Trong nhóm A: bán kính tăng dần (do số lớp e tăng).' },
+
+      // Bottom row (12..19) -> Ô 13..20
+      { num: 13, z: 10, sym: 'Ne', name: 'Neon', cat: 'cat-noble', xp: 20, sub: 'CK 2 • Nhóm VIIIA', q: 'Viết cấu hình e của Neon (Z=10)? Vì sao Neon ở điều kiện thường chỉ tồn tại ở dạng đơn nguyên tử?', a: 'Cấu hình: 1s² 2s² 2p⁶. Vì lớp ngoài cùng có 8e bão hòa rất bền vững, trơ về mặt hóa học.' },
+      { num: 14, z: 11, sym: 'Na', name: 'Sodium', cat: 'cat-alkali', xp: 20, sub: 'CK 3 • Nhóm IA', q: 'So sánh bán kính nguyên tử giữa Sodium (11Na) và Chlorine (17Cl)? Giải thích nguyên nhân cốt lõi?', a: 'Bán kính Na lớn hơn Cl. Giải thích: Cùng chu kỳ 3 (3 lớp e), Cl có Z=17 lớn hơn Na (Z=11) nên hút mạnh hơn, làm co bán kính Cl lại.' },
+      { num: 15, z: 12, sym: 'Mg', name: 'Magnesium', cat: 'cat-alkaline', xp: 20, sub: 'CK 3 • Nhóm IIA', q: 'So sánh tính kim loại giữa Na và Mg? Mô tả hiện tượng khi cho lần lượt Na và Mg vào cốc nước ở nhiệt độ thường?', a: 'Tính kim loại Na > Mg. Hiện tượng: Na phản ứng mãnh liệt với nước ở nhiệt độ thường; Mg phản ứng rất chậm.' },
+      { num: 16, type: 'special', sym: '⚔️', name: 'VÒNG XOÁY ĐỘ ÂM ĐIỆN', cat: 'cat-special', xp: 30, desc: 'Thách đấu cướp điểm!\nNhóm bạn sai: +30 XP', q: 'Cho dãy 4 nguyên tố: 11Na, 12Mg, 13Al, 17Cl. Hãy sắp xếp theo chiều TĂNG DẦN của độ âm điện và GIẢM DẦN của tính kim loại?', a: 'Tăng dần độ âm điện: Na < Mg < Al < Cl. Giảm dần tính kim loại: Na > Mg > Al (Cl là phi kim).' },
+      { num: 17, z: 13, sym: 'Al', name: 'Aluminium', cat: 'cat-metalloid', xp: 20, sub: 'CK 3 • Nhóm IIIA', q: 'Hydroxide của Nhôm Al(OH)3 có tính chất hóa học gì đặc biệt? Viết phương trình hóa học minh họa?', a: 'Al(OH)3 là hydroxide lưỡng tính (vừa tan trong acid mạnh, vừa tan trong base mạnh).' },
+      { num: 18, z: 14, sym: 'Si', name: 'Silicon', cat: 'cat-metalloid', xp: 20, sub: 'CK 3 • Nhóm IVA', q: 'Silicon có cấu hình electron lớp ngoài cùng là gì? Nêu vai trò quan trọng của Silicon trong thời đại công nghệ số?', a: 'Cấu hình ngoài cùng: 3s² 3p². Vai trò: Là vật liệu bán dẫn cốt lõi để chế tạo vi mạch tích hợp, chip CPU và pin mặt trời.' },
+      { num: 19, z: 15, sym: 'P', name: 'Phosphorus', cat: 'cat-nonmetal', xp: 30, sub: 'CK 3 • Nhóm VA', q: 'Viết công thức oxide cao nhất và hydroxide tương ứng của Phosphorus? Cho biết tính acid hay base của hydroxide đó?', a: 'Oxide cao nhất: P2O5 (Phosphorus pentoxide). Hydroxide tương ứng: H3PO4 (Phosphoric acid), có tính acid trung bình.' },
+      { num: 20, z: 16, sym: 'S', name: 'Sulfur', cat: 'cat-nonmetal', xp: 30, sub: 'CK 3 • Nhóm VIA', q: 'So sánh tính acid giữa H3PO4 và H2SO4? Giải thích nguyên nhân dựa vào độ âm điện của nguyên tử trung tâm?', a: 'Tính acid: H2SO4 > H3PO4. Giải thích: Trong chu kỳ 3, độ âm điện của S (2.58) > P (2.19) làm liên kết O-H phân cực mạnh hơn, dễ phân ly H+ hơn.' },
+
+      // Left col (20..23) -> Ô 21..24
+      { num: 21, z: 17, sym: 'Cl', name: 'Chlorine', cat: 'cat-halogen', xp: 30, sub: 'CK 3 • Nhóm VIIA', q: 'Viết công thức acid có oxygen mạnh nhất của Chlorine trong chu kỳ 3? Xác định số oxi hóa của Cl trong acid đó?', a: 'Công thức: HClO4 (Perchloric acid). Số oxi hóa của Chlorine trong HClO4 là +7 (cao nhất).' },
+      { num: 22, z: 18, sym: 'Ar', name: 'Argon', cat: 'cat-noble', xp: 30, sub: 'CK 3 • Nhóm VIIIA', q: 'Viết cấu hình electron của Argon (Z=18)? Nguyên tử Argon có bao nhiêu electron độc thân ở trạng thái cơ bản?', a: 'Cấu hình: 1s² 2s² 2p⁶ 3s² 3p⁶. Số electron độc thân là 0 (các orbital đều bão hòa electron ghép đôi).' },
+      { num: 23, z: 19, sym: 'K', name: 'Potassium', cat: 'cat-alkali', xp: 30, sub: 'CK 4 • Nhóm IA', q: 'So sánh tính kim loại giữa Potassium (19K) và Sodium (11Na)? Giải thích nguyên nhân dựa vào cấu tạo nguyên tử?', a: 'Tính kim loại K > Na. Giải thích: Cùng nhóm IA, K có 4 lớp e (bán kính lớn hơn Na có 3 lớp e) nên K dễ nhường e hơn.' },
+      { num: 24, z: 20, sym: 'Ca', name: 'Calcium', cat: 'cat-alkaline', xp: 30, sub: 'CK 4 • Nhóm IIA', q: 'Viết cấu hình electron của Calcium (Z=20) theo ô lượng tử hoặc dạng thu gọn [Ar]? Nêu vị trí của Ca trong BTH?', a: 'Cấu hình thu gọn: [Ar] 4s². Vị trí: Ô số 20, Chu kỳ 4 (4 lớp e), Nhóm IIA (2e hóa trị).' }
+    ];
+
+    const cellPositions = [
+      { c: 1, r: 1 }, { c: 2, r: 1 }, { c: 3, r: 1 }, { c: 4, r: 1 }, { c: 5, r: 1 }, { c: 6, r: 1 }, { c: 7, r: 1 }, { c: 8, r: 1 },
+      { c: 8, r: 2 }, { c: 8, r: 3 }, { c: 8, r: 4 }, { c: 8, r: 5 },
+      { c: 8, r: 6 }, { c: 7, r: 6 }, { c: 6, r: 6 }, { c: 5, r: 6 }, { c: 4, r: 6 }, { c: 3, r: 6 }, { c: 2, r: 6 }, { c: 1, r: 6 },
+      { c: 1, r: 5 }, { c: 1, r: 4 }, { c: 1, r: 3 }, { c: 1, r: 2 }
+    ];
+
+    let teams = [
+      { id: 1, name: 'Nhóm 1', color: '#ef4444', class: 't-team-1', pos: 0, xp: 0 },
+      { id: 2, name: 'Nhóm 2', color: '#3b82f6', class: 't-team-2', pos: 0, xp: 0 },
+      { id: 3, name: 'Nhóm 3', color: '#10b981', class: 't-team-3', pos: 0, xp: 0 },
+      { id: 4, name: 'Nhóm 4', color: '#f59e0b', class: 't-team-4', pos: 0, xp: 0 },
+      { id: 5, name: 'Nhóm 5', color: '#8b5cf6', class: 't-team-5', pos: 0, xp: 0 },
+      { id: 6, name: 'Nhóm 6', color: '#ec4899', class: 't-team-6', pos: 0, xp: 0 }
+    ];
+    let currentTeamIdx = 0;
+    let isRolling = false;
+    let timerInterval = null;
+    let currentSpace = null;
+
+    function initBoard() {
+      const grid = document.getElementById('boardGrid');
+      grid.innerHTML = '';
+
+      boardSpaces.forEach((sp, idx) => {
+        const pos = cellPositions[idx];
+        const cell = document.createElement('div');
+        cell.className = `cell ${sp.cat}`;
+        cell.id = `cell-${idx}`;
+        cell.style.gridColumn = pos.c;
+        cell.style.gridRow = pos.r;
+        cell.onclick = () => openCardManually(idx);
+
+        const numStr = `Ô ${sp.num < 10 ? '0' + sp.num : sp.num}`;
+
+        if (sp.type === 'start') {
+          cell.innerHTML = `
+            <div class="cell-header">
+              <span class="cell-num">${numStr}</span>
+              <span class="cell-xp">+${sp.xp} XP</span>
+            </div>
+            <div class="cell-symbol" style="font-size:1.3rem;">🏁 XUẤT PHÁT</div>
+            <div class="cell-sub">${sp.desc.replace('\n', '<br>')}</div>
+            <div class="cell-tokens" id="tokens-${idx}"></div>
+          `;
+        } else if (sp.type === 'special') {
+          cell.innerHTML = `
+            <div class="cell-header">
+              <span class="cell-num">${numStr}</span>
+              <span class="cell-xp">+${sp.xp} XP</span>
+            </div>
+            <div class="cell-symbol" style="font-size:1.3rem;">${sp.sym} ĐẶC BIỆT</div>
+            <div class="cell-name">${sp.name}</div>
+            <div class="cell-tokens" id="tokens-${idx}"></div>
+          `;
+        } else {
+          cell.innerHTML = `
+            <div class="cell-header">
+              <span class="cell-num">${numStr}</span>
+              <span class="cell-xp">+${sp.xp} XP</span>
+            </div>
+            <div class="cell-symbol">${sp.sym}</div>
+            <div class="cell-name">${sp.name} (Z=${sp.z})</div>
+            <div class="cell-sub">${sp.sub}</div>
+            <div class="cell-tokens" id="tokens-${idx}"></div>
+          `;
+        }
+        grid.appendChild(cell);
+      });
+
+      const center = document.createElement('div');
+      center.className = 'center-arena';
+      center.innerHTML = `
+        <div>
+          <div class="center-title">🏆 ĐẤU TRƯỜNG BẬC THẦY TUẦN HOÀN 🏆</div>
+          <div class="center-desc">Vận dụng kiến thức Cấu tạo Bảng tuần hoàn • Thi đấu đồng đội • Tích lũy điểm XP</div>
+        </div>
+
+        <div class="dice-action-area">
+          <div class="dice-cube" id="diceDisplay" onclick="rollDice()">🎲</div>
+          <div class="turn-status">
+            <div class="turn-team" id="centerTurnTeam">
+              <span class="token-dot t-team-1" style="width:24px; height:24px;">1</span>
+              <span>Đang đến lượt: Nhóm 1</span>
+            </div>
+            <div class="turn-guide" id="centerTurnGuide">Bấm vào khối xúc xắc hoặc nút quay để bốc thăm bước đi!</div>
+          </div>
+        </div>
+
+        <div class="quick-legend">
+          <div class="leg-item"><div class="leg-badge" style="background:#ef4444;"></div> Kim loại kiềm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#f59e0b;"></div> Kiềm thổ</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#0ea5e9;"></div> Halogen</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#6366f1;"></div> Khí hiếm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#22c55e;"></div> Phi kim</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#eab308;"></div> Á kim / Nhôm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#ec4899;"></div> Ô Thách đấu</div>
+        </div>
+      `;
+      grid.appendChild(center);
+
+      renderTokens();
+      renderScoreboard();
+    }
+
+    function renderTokens() {
+      for (let i = 0; i < boardSpaces.length; i++) {
+        const el = document.getElementById(`tokens-${i}`);
+        if (el) el.innerHTML = '';
+      }
+      teams.forEach(t => {
+        const holder = document.getElementById(`tokens-${t.pos}`);
+        if (holder) {
+          const dot = document.createElement('div');
+          dot.className = `token-dot ${t.class}`;
+          dot.innerText = t.id;
+          dot.title = `${t.name}: ${t.xp} XP`;
+          holder.appendChild(dot);
+        }
+      });
+    }
+
+    function renderScoreboard() {
+      const list = document.getElementById('teamsList');
+      list.innerHTML = '';
+      
+      const sortedTeams = [...teams].sort((a, b) => b.xp - a.xp);
+
+      sortedTeams.forEach((t, rank) => {
+        const item = document.createElement('div');
+        item.className = `team-item ${t.id === teams[currentTeamIdx].id ? 'current-turn' : ''}`;
+        item.style.borderLeftColor = t.color;
+        item.innerHTML = `
+          <div>
+            <div class="team-name">
+              <span class="token-dot ${t.class}">${t.id}</span>
+              <span>${t.name} ${rank === 0 && t.xp > 0 ? '👑' : ''}</span>
+            </div>
+            <div class="team-pos">Vị trí: Ô ${boardSpaces[t.pos].num} (${boardSpaces[t.pos].name})</div>
+          </div>
+          <div class="team-xp">${t.xp} XP</div>
+        `;
+        list.appendChild(item);
+      });
+
+      const cur = teams[currentTeamIdx];
+      document.getElementById('sidebarTurnTeam').innerHTML = `
+        <span class="token-dot ${cur.class}" style="width:22px; height:22px;">${cur.id}</span>
+        <span>${cur.name}</span>
+      `;
+      const centerTurn = document.getElementById('centerTurnTeam');
+      if (centerTurn) {
+        centerTurn.innerHTML = `
+          <span class="token-dot ${cur.class}" style="width:24px; height:24px;">${cur.id}</span>
+          <span>Đang đến lượt: ${cur.name}</span>
+        `;
+      }
+    }
+
+    function rollDice() {
+      if (isRolling) return;
+      isRolling = true;
+      playBeep(440, 'triangle', 0.1);
+
+      const diceCube = document.getElementById('diceDisplay');
+      diceCube.classList.add('rolling');
+      let rolls = 0;
+
+      const rollTimer = setInterval(() => {
+        rolls++;
+        const rand = Math.floor(Math.random() * 6) + 1;
+        diceCube.innerText = rand;
+        playBeep(300 + rolls * 40, 'sine', 0.05);
+
+        if (rolls > 12) {
+          clearInterval(rollTimer);
+          diceCube.classList.remove('rolling');
+          const finalRoll = Math.floor(Math.random() * 6) + 1;
+          diceCube.innerText = finalRoll;
+          playBeep(660, 'sine', 0.25);
+          
+          moveCurrentTeam(finalRoll);
+        }
+      }, 70);
+    }
+
+    function moveCurrentTeam(steps) {
+      const cur = teams[currentTeamIdx];
+      let stepCount = 0;
+      const stepTimer = setInterval(() => {
+        stepCount++;
+        cur.pos = (cur.pos + 1) % boardSpaces.length;
+        renderTokens();
+        playBeep(520, 'square', 0.05);
+
+        if (stepCount >= steps) {
+          clearInterval(stepTimer);
+          isRolling = false;
+          highlightCell(cur.pos);
+          setTimeout(() => {
+            triggerChallenge(cur.pos);
+          }, 400);
+        }
+      }, 200);
+    }
+
+    function highlightCell(cellId) {
+      document.querySelectorAll('.cell').forEach(c => c.classList.remove('active-cell'));
+      const c = document.getElementById(`cell-${cellId}`);
+      if (c) c.classList.add('active-cell');
+    }
+
+    function triggerChallenge(cellId) {
+      const sp = boardSpaces[cellId];
+      currentSpace = sp;
+      const cur = teams[currentTeamIdx];
+      const numFormatted = sp.num < 10 ? '0' + sp.num : sp.num;
+
+      document.getElementById('modalBadge').innerText = `THẺ SỐ ${numFormatted} — +${sp.xp} XP`;
+      document.getElementById('modalTeamName').innerText = `Lượt: ${cur.name}`;
+      document.getElementById('modalElementTitle').innerText = sp.z ? `Ô ${numFormatted}: ${sp.name} (${sp.sym}) — Z = ${sp.z}` : `Ô ${numFormatted}: ${sp.name}`;
+      document.getElementById('modalQuestion').innerHTML = `<strong>Nhiệm vụ thử thách (45 giây):</strong><br>${sp.q}`;
+      document.getElementById('modalAnswer').innerHTML = `<strong>Đáp án chuẩn & Hướng dẫn chấm Rubric:</strong><br>${sp.a.replace(/\n/g, '<br>')}`;
+      document.getElementById('modalAnswer').style.display = 'none';
+
+      document.getElementById('cardModal').style.display = 'flex';
+      playBeep(780, 'sine', 0.3);
+
+      startTimer(45);
+    }
+
+    function openCardManually(cellId) {
+      highlightCell(cellId);
+      triggerChallenge(cellId);
+    }
+
+    function startTimer(seconds) {
+      if (timerInterval) clearInterval(timerInterval);
+      let left = seconds;
+      const bar = document.getElementById('timerBar');
+      const text = document.getElementById('timerText');
+
+      bar.style.width = '100%';
+      bar.style.backgroundColor = '#10b981';
+      text.innerText = `⏱️ Thời gian hội ý: ${left}s`;
+
+      timerInterval = setInterval(() => {
+        left--;
+        const pct = (left / seconds) * 100;
+        bar.style.width = `${pct}%`;
+        text.innerText = `⏱️ Thời gian hội ý: ${left}s`;
+
+        if (left <= 15) {
+          bar.style.backgroundColor = '#f59e0b';
+          playBeep(350, 'sine', 0.08);
+        }
+        if (left <= 5) {
+          bar.style.backgroundColor = '#ef4444';
+          playBeep(550, 'sawtooth', 0.15);
+        }
+        if (left <= 0) {
+          clearInterval(timerInterval);
+          text.innerText = `🚨 HẾT GIỜ HỘI Ý! ĐỘI ĐỐI DIỆN CÓ QUYỀN CƯỚP ĐIỂM!`;
+          playBeep(220, 'sawtooth', 0.6);
+        }
+      }, 1000);
+    }
+
+    function toggleAnswer() {
+      const ans = document.getElementById('modalAnswer');
+      ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function resolveTurn(isCorrect) {
+      if (timerInterval) clearInterval(timerInterval);
+      const cur = teams[currentTeamIdx];
+      const sp = currentSpace;
+
+      if (isCorrect) {
+        cur.xp += sp.xp;
+        playBeep(880, 'sine', 0.4);
+        alert(`🎉 XUẤT SẮC! ${cur.name} trả lời chính xác, được cộng +${sp.xp} XP!`);
+      } else {
+        playBeep(200, 'sawtooth', 0.4);
+        const stealTeamId = prompt(`❌ ${cur.name} trả lời chưa chuẩn!\n\nĐội đối diện nào giơ cờ cướp điểm thành công? (Nhập số từ 1 đến 6 để cộng +${sp.xp} XP cho đội cướp; hoặc bấm Hủy nếu không đội nào cướp):`);
+        if (stealTeamId && stealTeamId >= 1 && stealTeamId <= 6) {
+          const stealer = teams[stealTeamId - 1];
+          stealer.xp += sp.xp;
+          alert(`⚡ CƯỚP ĐIỂM THÀNH CÔNG! ${stealer.name} được cộng +${sp.xp} XP!`);
+        }
+      }
+
+      document.getElementById('cardModal').style.display = 'none';
+
+      currentTeamIdx = (currentTeamIdx + 1) % teams.length;
+      renderScoreboard();
+    }
+
+    function resetGame() {
+      if (confirm("Thầy có chắc chắn muốn làm mới lại ván chơi từ đầu?")) {
+        teams.forEach(t => { t.pos = 0; t.xp = 0; });
+        currentTeamIdx = 0;
+        renderTokens();
+        renderScoreboard();
+        document.querySelectorAll('.cell').forEach(c => c.classList.remove('active-cell'));
+      }
+    }
+
+    window.onload = () => {
+      initBoard();
+    };
+  </script>
 </body>
 </html>
