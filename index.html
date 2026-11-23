@@ -1225,6 +1225,37 @@
       });
       currentTeamIdx = 0;
       initBoard();
+      const center = document.createElement('div');
+      center.className = 'center-arena';
+      center.innerHTML = `
+        <div>
+          <div class="center-title">🏆 ĐẤU TRƯỜNG BẬC THẦY TUẦN HOÀN 🏆</div>
+          <div class="center-desc">Vận dụng kiến thức Cấu tạo Bảng tuần hoàn • Thi đấu đồng đội • Tích lũy điểm XP</div>
+        </div>
+
+        <div class="dice-action-area">
+          <div class="dice-cube" id="diceDisplay" onclick="rollDice()" title="Bấm trực tiếp vào đây hoặc nút bên phải để quay xúc xắc!">🎲</div>
+          <div class="turn-status">
+            <div class="turn-team" id="centerTurnTeam">
+              <span class="token-dot t-team-1" style="width:24px; height:24px;">1</span>
+              <span>Đang đến lượt: Nhóm 1</span>
+            </div>
+            <div class="turn-guide" id="centerTurnGuide">👉 Nhấp trực tiếp vào viên xúc xắc hoặc bấm nút để quay!</div>
+          </div>
+        </div>
+
+        <div class="quick-legend">
+          <div class="leg-item"><div class="leg-badge" style="background:#ef4444;"></div> Kim loại kiềm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#f59e0b;"></div> Kiềm thổ</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#0ea5e9;"></div> Halogen</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#6366f1;"></div> Khí hiếm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#22c55e;"></div> Phi kim</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#eab308;"></div> Á kim / Nhôm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#ec4899;"></div> Ô Thách đấu</div>
+        </div>
+      `;
+      grid.appendChild(center);
+
       renderTokens();
       renderScoreboard();
       playBeep(580, 'sine', 0.2);
@@ -1337,6 +1368,13 @@
         <span>${cur.name}</span>
       `;
       document.getElementById('turnGuideText').innerText = `Lượt của ${cur.name} (Đang ở Ô ${boardSpaces[cur.pos].num}). Bấm nút để quay xúc xắc!`;
+const centerTurn = document.getElementById('centerTurnTeam');
+      if (centerTurn) {
+        centerTurn.innerHTML = `
+          <span class="token-dot ${cur.class}" style="width:24px; height:24px;">${cur.id}</span>
+          <span>Đang đến lượt: ${cur.name} (Ô ${boardSpaces[cur.pos].num})</span>
+        `;
+      }
     }
 
     function rollDice() {
