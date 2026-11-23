@@ -422,7 +422,11 @@
 
   <header>
     <div class="header-title">
-      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10</h1>
+      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10 
+        <span style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-size: 0.8rem; padding: 4px 14px; border-radius: 999px; font-weight: 700; box-shadow: 0 0 12px rgba(16,185,129,0.6); vertical-align: middle; display: inline-flex; align-items: center; gap: 6px;">
+          ⚡ ĐÃ BẬT: Xoay vòng 72 câu hỏi chống trùng lặp
+        </span>
+      </h1>
       <p>Trường THPT Bùi Thị Xuân – Mũi Né (Lâm Đồng) • Học cụ Gamification Chủ đề Cấu tạo Bảng tuần hoàn</p>
     </div>
     <div class="header-controls">
@@ -490,6 +494,7 @@
 
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="toggleAnswer()">👁️ Hiện đáp án / Gợi ý</button>
+        <button class="btn btn-primary" onclick="nextQuestionInModal()" style="background: linear-gradient(135deg, #0284c7, #0369a1); border: none; box-shadow: 0 0 10px rgba(2,132,199,0.5);">🔄 Đổi câu hỏi khác (Xoay vòng)</button>
         <button class="btn btn-danger" onclick="resolveTurn(false)">❌ Trả lời SAI / Bị cướp</button>
         <button class="btn btn-success" onclick="resolveTurn(true)">✅ Trả lời ĐÚNG (+XP)</button>
       </div>
@@ -1387,6 +1392,25 @@ Tranh đoạt điểm thưởng • +30 XP",
           playBeep(220, 'sawtooth', 0.6);
         }
       }, 1000);
+    }
+
+    
+    function nextQuestionInModal() {
+      if (!currentSpace || !currentSpace.questions || currentSpace.questions.length <= 1) return;
+      currentSpace.currentQIdx = (currentSpace.currentQIdx + 1) % currentSpace.questions.length;
+      const qItem = currentSpace.questions[currentSpace.currentQIdx];
+      const qIndexNum = currentSpace.currentQIdx + 1;
+      const totalQ = currentSpace.questions.length;
+      const numFormatted = currentSpace.num < 10 ? '0' + currentSpace.num : currentSpace.num;
+
+      let badgeHtml = `THẺ SỐ ${numFormatted} — +${currentSpace.xp} XP • [Câu hỏi ${qIndexNum}/${totalQ}]`;
+      badgeHtml += ` <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 10px rgba(225,29,72,0.5);">🔥 ĐÃ ĐỔI CÂU HỎI MỚI (${qIndexNum}/${totalQ})</span>`;
+
+      document.getElementById('modalBadge').innerHTML = badgeHtml;
+      document.getElementById('modalQuestion').innerHTML = `<strong>Nhiệm vụ thử thách (45 giây):</strong><br>${qItem.q}`;
+      document.getElementById('modalAnswer').innerHTML = `<strong>Đáp án chuẩn & Hướng dẫn chấm Rubric (Câu ${qIndexNum}):</strong><br>${qItem.a.replace(/\n/g, '<br>')}`;
+      document.getElementById('modalAnswer').style.display = 'none';
+      playBeep(620, 'sine', 0.15);
     }
 
     function toggleAnswer() {
