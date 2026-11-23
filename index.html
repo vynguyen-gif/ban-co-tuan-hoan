@@ -416,13 +416,64 @@
     .btn-success:hover { background: #059669; }
     .btn-danger { background: #ef4444; color: #fff; }
     .btn-danger:hover { background: #dc2626; }
+  
+    /* Pauli Banner & Gate Badges */
+    .pauli-banner {
+      position: fixed;
+      top: 75px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      border: 2px solid #818cf8;
+      box-shadow: 0 10px 35px rgba(99, 102, 241, 0.5);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 14px;
+      z-index: 2500;
+      max-width: 580px;
+      width: 90%;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      text-align: center;
+    }
+    .pauli-banner.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    .pauli-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fbbf24;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .pauli-desc {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+    .gate-badge {
+      background: rgba(99, 102, 241, 0.35);
+      border: 1px solid #818cf8;
+      color: #c7d2fe;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
   </style>
 </head>
 <body>
 
   <header>
     <div class="header-title">
-      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10 <span class="badge" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; margin-left: 10px; font-weight: 600; display: inline-block; vertical-align: middle;">⚡ ĐÃ BẬT: Xoay vòng 72 câu hỏi chống trùng lặp</span></h1>
+      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10 <span class="badge" style="background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #10b981; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; margin-left: 10px; font-weight: 600; display: inline-block; vertical-align: middle;">⚡ ĐÃ BẬT: 6 Cổng Xuất Phát & Lực Đẩy Pauli (100% Không Trùng Ô)</span></h1>
       <p>Trường THPT Bùi Thị Xuân – Mũi Né (Lâm Đồng) • Học cụ Gamification Chủ đề Cấu tạo Bảng tuần hoàn</p>
     </div>
     <div class="header-controls">
@@ -440,6 +491,18 @@
     <div class="sidebar">
       <div class="panel">
         <h2>🎲 LƯỢT CHƠI HIỆN TẠI</h2>
+        <!-- Bộ chọn chế độ xuất phát & cơ chế Pauli -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;">
+          <label style="font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 5px; font-weight: 700;">🚦 VỊ TRÍ XUẤT PHÁT:</label>
+          <select id="startModeSelect" onchange="changeStartMode(this.value)" style="width: 100%; background: #1e293b; border: 1px solid #6366f1; color: #f8fafc; border-radius: 6px; padding: 6px 8px; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer;">
+            <option value="staggered" selected>🚀 6 Cổng Phân Tán (Khuyên dùng - Tránh tắc đường)</option>
+            <option value="single">🏁 Cùng Xuất Phát Ô 01 (1 Cổng tập trung)</option>
+          </select>
+          <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 6px; display: flex; align-items: center; justify-content: space-between;">
+            <span>⚡ Lực đẩy Pauli:</span>
+            <span style="color: #4ade80; font-weight: bold; background: rgba(74,222,128,0.15); padding: 1px 6px; border-radius: 4px;">TỰ ĐỘNG BẬT</span>
+          </div>
+        </div>
         <div style="text-align: center; margin: 10px 0;">
           <div class="turn-team" id="sidebarTurnTeam">
             <span class="token-dot t-team-1" style="width:22px; height:22px;">1</span>
@@ -1139,18 +1202,33 @@
       { c: 1, r: 5 }, { c: 1, r: 4 }, { c: 1, r: 3 }, { c: 1, r: 2 }
     ];
 
+    let startMode = 'staggered';
     let teams = [
-      { id: 1, name: 'Nhóm 1', color: '#ef4444', class: 't-team-1', pos: 0, xp: 0 },
-      { id: 2, name: 'Nhóm 2', color: '#3b82f6', class: 't-team-2', pos: 0, xp: 0 },
-      { id: 3, name: 'Nhóm 3', color: '#10b981', class: 't-team-3', pos: 0, xp: 0 },
-      { id: 4, name: 'Nhóm 4', color: '#f59e0b', class: 't-team-4', pos: 0, xp: 0 },
-      { id: 5, name: 'Nhóm 5', color: '#8b5cf6', class: 't-team-5', pos: 0, xp: 0 },
-      { id: 6, name: 'Nhóm 6', color: '#ec4899', class: 't-team-6', pos: 0, xp: 0 }
+      { id: 1, name: 'Nhóm 1', color: '#ef4444', class: 't-team-1', pos: 0, startPos: 0, xp: 0 },
+      { id: 2, name: 'Nhóm 2', color: '#3b82f6', class: 't-team-2', pos: 4, startPos: 4, xp: 0 },
+      { id: 3, name: 'Nhóm 3', color: '#10b981', class: 't-team-3', pos: 8, startPos: 8, xp: 0 },
+      { id: 4, name: 'Nhóm 4', color: '#f59e0b', class: 't-team-4', pos: 12, startPos: 12, xp: 0 },
+      { id: 5, name: 'Nhóm 5', color: '#8b5cf6', class: 't-team-5', pos: 16, startPos: 16, xp: 0 },
+      { id: 6, name: 'Nhóm 6', color: '#ec4899', class: 't-team-6', pos: 20, startPos: 20, xp: 0 }
     ];
     let currentTeamIdx = 0;
     let isRolling = false;
     let timerInterval = null;
     let currentSpace = null;
+    let currentPauliJump = { jumped: 0, wasJumped: false };
+
+    function changeStartMode(mode) {
+      startMode = mode;
+      teams.forEach((t, i) => {
+        t.startPos = (mode === 'staggered') ? (i * 4) : 0;
+        t.pos = t.startPos;
+      });
+      currentTeamIdx = 0;
+      initBoard();
+      renderTokens();
+      renderScoreboard();
+      playBeep(580, 'sine', 0.2);
+    }
 
     function initBoard() {
       const grid = document.getElementById('boardGrid');
@@ -1166,15 +1244,19 @@
         cell.onclick = () => openCardManually(idx);
 
         const numStr = `Ô ${sp.num < 10 ? '0' + sp.num : sp.num}`;
+        const gateNum = (idx % 4 === 0) ? (idx / 4 + 1) : null;
+        const gateBadge = (startMode === 'staggered' && gateNum) 
+          ? `<span class="gate-badge">Cổng ${gateNum}</span>` 
+          : '';
 
         if (sp.type === 'start') {
           cell.innerHTML = `
             <div class="cell-header">
-              <span class="cell-num">${numStr}</span>
+              <span class="cell-num">${numStr}${gateBadge}</span>
               <span class="cell-xp">+${sp.xp} XP</span>
             </div>
             <div class="cell-symbol" style="font-size:1.3rem;">🏁 XUẤT PHÁT</div>
-            <div class="cell-sub">${sp.desc.replace('\n', '<br>')}</div>
+            <div class="cell-sub">${sp.desc.replace(/\n/g, '<br>')}</div>
             <div class="cell-tokens" id="tokens-${idx}"></div>
           `;
         } else if (sp.type === 'special') {
@@ -1190,48 +1272,19 @@
         } else {
           cell.innerHTML = `
             <div class="cell-header">
-              <span class="cell-num">${numStr}</span>
+              <span class="cell-num">${numStr}${gateBadge}</span>
               <span class="cell-xp">+${sp.xp} XP</span>
             </div>
+            <div class="cell-z">Z = ${sp.z}</div>
             <div class="cell-symbol">${sp.sym}</div>
-            <div class="cell-name">${sp.name} (Z=${sp.z})</div>
+            <div class="cell-name">${sp.name}</div>
             <div class="cell-sub">${sp.sub}</div>
             <div class="cell-tokens" id="tokens-${idx}"></div>
           `;
         }
+
         grid.appendChild(cell);
       });
-
-      const center = document.createElement('div');
-      center.className = 'center-arena';
-      center.innerHTML = `
-        <div>
-          <div class="center-title">🏆 ĐẤU TRƯỜNG BẬC THẦY TUẦN HOÀN 🏆</div>
-          <div class="center-desc">Vận dụng kiến thức Cấu tạo Bảng tuần hoàn • Thi đấu đồng đội • Tích lũy điểm XP</div>
-        </div>
-
-        <div class="dice-action-area">
-          <div class="dice-cube" id="diceDisplay" onclick="rollDice()">🎲</div>
-          <div class="turn-status">
-            <div class="turn-team" id="centerTurnTeam">
-              <span class="token-dot t-team-1" style="width:24px; height:24px;">1</span>
-              <span>Đang đến lượt: Nhóm 1</span>
-            </div>
-            <div class="turn-guide" id="centerTurnGuide">Bấm vào khối xúc xắc hoặc nút quay để bốc thăm bước đi!</div>
-          </div>
-        </div>
-
-        <div class="quick-legend">
-          <div class="leg-item"><div class="leg-badge" style="background:#ef4444;"></div> Kim loại kiềm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#f59e0b;"></div> Kiềm thổ</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#0ea5e9;"></div> Halogen</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#6366f1;"></div> Khí hiếm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#22c55e;"></div> Phi kim</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#eab308;"></div> Á kim / Nhôm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#ec4899;"></div> Ô Thách đấu</div>
-        </div>
-      `;
-      grid.appendChild(center);
 
       renderTokens();
       renderScoreboard();
@@ -1239,16 +1292,17 @@
 
     function renderTokens() {
       for (let i = 0; i < boardSpaces.length; i++) {
-        const el = document.getElementById(`tokens-${i}`);
-        if (el) el.innerHTML = '';
+        const holder = document.getElementById(`tokens-${i}`);
+        if (holder) holder.innerHTML = '';
       }
+
       teams.forEach(t => {
         const holder = document.getElementById(`tokens-${t.pos}`);
         if (holder) {
           const dot = document.createElement('div');
           dot.className = `token-dot ${t.class}`;
           dot.innerText = t.id;
-          dot.title = `${t.name}: ${t.xp} XP`;
+          dot.title = `${t.name} (Vị trí hiện tại)`;
           holder.appendChild(dot);
         }
       });
@@ -1282,13 +1336,7 @@
         <span class="token-dot ${cur.class}" style="width:22px; height:22px;">${cur.id}</span>
         <span>${cur.name}</span>
       `;
-      const centerTurn = document.getElementById('centerTurnTeam');
-      if (centerTurn) {
-        centerTurn.innerHTML = `
-          <span class="token-dot ${cur.class}" style="width:24px; height:24px;">${cur.id}</span>
-          <span>Đang đến lượt: ${cur.name}</span>
-        `;
-      }
+      document.getElementById('turnGuideText').innerText = `Lượt của ${cur.name} (Đang ở Ô ${boardSpaces[cur.pos].num}). Bấm nút để quay xúc xắc!`;
     }
 
     function rollDice() {
@@ -1329,13 +1377,67 @@
 
         if (stepCount >= steps) {
           clearInterval(stepTimer);
-          isRolling = false;
-          highlightCell(cur.pos);
-          setTimeout(() => {
-            triggerChallenge(cur.pos);
-          }, 400);
+          
+          // Kiểm tra và thực thi Quy tắc Lực đẩy Pauli (Chống trùng ô tuyệt đối)
+          checkPauliExclusion(cur);
         }
       }, 200);
+    }
+
+    function checkPauliExclusion(cur) {
+      const occupyingTeam = teams.find(t => t.id !== cur.id && t.pos === cur.pos);
+
+      if (occupyingTeam) {
+        // CÓ ĐỘI ĐANG CHIẾM Ô NÀY -> KÍCH HOẠT LỰC ĐẨY PAULI
+        const oldPos = cur.pos;
+        let jumped = 0;
+        while (teams.some(t => t.id !== cur.id && t.pos === cur.pos)) {
+          cur.pos = (cur.pos + 1) % boardSpaces.length;
+          jumped++;
+          if (jumped >= boardSpaces.length) break;
+        }
+
+        renderTokens();
+        highlightCell(cur.pos);
+
+        // Âm thanh lượng tử
+        playBeep(750, 'sine', 0.12);
+        setTimeout(() => playBeep(1050, 'triangle', 0.25), 180);
+
+        showPauliBanner(cur, occupyingTeam, oldPos, cur.pos, jumped);
+
+        currentPauliJump = { jumped: jumped, wasJumped: true };
+
+        setTimeout(() => {
+          isRolling = false;
+          triggerChallenge(cur.pos, true, jumped);
+        }, 1600);
+      } else {
+        currentPauliJump = { jumped: 0, wasJumped: false };
+        isRolling = false;
+        highlightCell(cur.pos);
+        setTimeout(() => {
+          triggerChallenge(cur.pos, false, 0);
+        }, 400);
+      }
+    }
+
+    function showPauliBanner(cur, occupiedTeam, oldPos, newPos, jumped) {
+      const banner = document.getElementById('pauliBanner');
+      const desc = document.getElementById('pauliDesc');
+      if (!banner || !desc) return;
+      
+      const spOld = boardSpaces[oldPos];
+      const spNew = boardSpaces[newPos];
+      
+      desc.innerHTML = `Ô ${spOld.num} (<strong>${spOld.name}</strong>) đã có <strong>${occupiedTeam.name}</strong> chiếm giữ!<br>` +
+        `Theo <strong>Nguyên lý loại trừ Pauli</strong>: 2 hạt không thể có cùng trạng thái!<br>` +
+        `👉 <strong>${cur.name}</strong> được lực đẩy tiến thêm <strong>+${jumped} ô</strong> sang <strong>Ô ${spNew.num}: ${spNew.name}</strong>!`;
+      
+      banner.classList.add('show');
+      setTimeout(() => {
+        banner.classList.remove('show');
+      }, 3600);
     }
 
     function highlightCell(cellId) {
@@ -1344,7 +1446,7 @@
       if (c) c.classList.add('active-cell');
     }
 
-    function renderModalCard(sp, qIdx) {
+    function renderModalCard(sp, qIdx, wasPauliJumped, jumpedCount) {
       if (qIdx === undefined) qIdx = sp.currentQIdx || 0;
       sp.currentQIdx = qIdx;
       const cur = teams[currentTeamIdx];
@@ -1354,7 +1456,9 @@
       const qNum = qIdx + 1;
 
       let badgeHtml = `THẺ SỐ ${numFormatted} — +${sp.xp} XP • [Câu hỏi ${qNum}/${totalQ}]`;
-      if (qIdx > 0) {
+      if (wasPauliJumped) {
+        badgeHtml += ` <span style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 10px rgba(16,185,129,0.5);">⚡ LỰC ĐẨY PAULI (+${jumpedCount || 1} Ô)</span>`;
+      } else if (qIdx > 0) {
         badgeHtml += ` <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 8px rgba(225,29,72,0.5);">🔥 CÂU HỎI MỚI (Lượt ${qNum})</span>`;
       }
 
@@ -1369,23 +1473,22 @@
     function switchModalQuestion() {
       if (!currentSpace || !currentSpace.questions || currentSpace.questions.length <= 1) return;
       const nextIdx = ((currentSpace.currentQIdx || 0) + 1) % currentSpace.questions.length;
-      renderModalCard(currentSpace, nextIdx);
+      renderModalCard(currentSpace, nextIdx, currentPauliJump.wasJumped, currentPauliJump.jumped);
       playBeep(600, 'sine', 0.15);
       startTimer(45);
     }
 
-    function triggerChallenge(cellId) {
+    function triggerChallenge(cellId, wasPauliJumped = false, jumpedCount = 0) {
       const sp = boardSpaces[cellId];
       currentSpace = sp;
 
-      // Tự động xoay vòng sang câu hỏi tiếp theo nếu ô này đã được nhóm trước kích hoạt
       if (sp.currentQIdx === undefined) {
         sp.currentQIdx = 0;
       } else {
         sp.currentQIdx = (sp.currentQIdx + 1) % sp.questions.length;
       }
 
-      renderModalCard(sp, sp.currentQIdx);
+      renderModalCard(sp, sp.currentQIdx, wasPauliJumped, jumpedCount);
 
       document.getElementById('cardModal').style.display = 'flex';
       playBeep(780, 'sine', 0.3);
@@ -1395,7 +1498,7 @@
 
     function openCardManually(cellId) {
       highlightCell(cellId);
-      triggerChallenge(cellId);
+      triggerChallenge(cellId, false, 0);
     }
 
     function startTimer(seconds) {
@@ -1432,7 +1535,12 @@
 
     function toggleAnswer() {
       const ans = document.getElementById('modalAnswer');
-      ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+      if (ans.style.display === 'none') {
+        ans.style.display = 'block';
+        playBeep(500, 'sine', 0.1);
+      } else {
+        ans.style.display = 'none';
+      }
     }
 
     function resolveTurn(isCorrect) {
@@ -1462,7 +1570,10 @@
 
     function resetGame() {
       if (confirm("Thầy có chắc chắn muốn làm mới lại ván chơi từ đầu?")) {
-        teams.forEach(t => { t.pos = 0; t.xp = 0; });
+        teams.forEach(t => { 
+          t.pos = t.startPos; 
+          t.xp = 0; 
+        });
         currentTeamIdx = 0;
         renderTokens();
         renderScoreboard();
@@ -1474,5 +1585,12 @@
       initBoard();
     };
   </script>
+
+  <!-- Toast thông báo Lực đẩy Pauli -->
+  <div id="pauliBanner" class="pauli-banner">
+    <div class="pauli-title">⚡ NGUYÊN LÝ LOẠI TRỪ PAULI KÍCH HOẠT!</div>
+    <div class="pauli-desc" id="pauliDesc"></div>
+  </div>
+
 </body>
 </html>
