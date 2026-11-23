@@ -509,6 +509,10 @@
             <span>Nhóm 1</span>
           </div>
           <div style="margin: 15px 0;">
+            <div style="display: flex; justify-content: center; align-items: center; margin: 12px 0;">
+            <div class="dice-cube" id="sidebarDiceDisplay" onclick="rollDice()" title="Bấm vào viên xúc xắc để quay!" style="width: 72px; height: 72px; font-size: 2.8rem; cursor: pointer;">🎲</div>
+          </div>
+          <div style="margin: 10px 0;">
             <button class="btn btn-primary" style="width:100%; padding: 12px; font-size:1.1rem; justify-content:center;" onclick="rollDice()">
               🎲 QUAY XÚC XẮC NGAY
             </button>
@@ -1225,39 +1229,6 @@
       });
       currentTeamIdx = 0;
       initBoard();
-      const center = document.createElement('div');
-      center.className = 'center-arena';
-      center.innerHTML = `
-        <div>
-          <div class="center-title">🏆 ĐẤU TRƯỜNG BẬC THẦY TUẦN HOÀN 🏆</div>
-          <div class="center-desc">Vận dụng kiến thức Cấu tạo Bảng tuần hoàn • Thi đấu đồng đội • Tích lũy điểm XP</div>
-        </div>
-
-        <div class="dice-action-area">
-          <div class="dice-cube" id="diceDisplay" onclick="rollDice()" title="Bấm trực tiếp vào đây hoặc nút bên phải để quay xúc xắc!">🎲</div>
-          <div class="turn-status">
-            <div class="turn-team" id="centerTurnTeam">
-              <span class="token-dot t-team-1" style="width:24px; height:24px;">1</span>
-              <span>Đang đến lượt: Nhóm 1</span>
-            </div>
-            <div class="turn-guide" id="centerTurnGuide">👉 Nhấp trực tiếp vào viên xúc xắc hoặc bấm nút để quay!</div>
-          </div>
-        </div>
-
-        <div class="quick-legend">
-          <div class="leg-item"><div class="leg-badge" style="background:#ef4444;"></div> Kim loại kiềm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#f59e0b;"></div> Kiềm thổ</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#0ea5e9;"></div> Halogen</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#6366f1;"></div> Khí hiếm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#22c55e;"></div> Phi kim</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#eab308;"></div> Á kim / Nhôm</div>
-          <div class="leg-item"><div class="leg-badge" style="background:#ec4899;"></div> Ô Thách đấu</div>
-        </div>
-      `;
-      grid.appendChild(center);
-
-      renderTokens();
-      renderScoreboard();
       playBeep(580, 'sine', 0.2);
     }
 
@@ -1316,6 +1287,38 @@
 
         grid.appendChild(cell);
       });
+
+      // KHỐI ĐẤU TRƯỜNG TRUNG TÂM VÀ XÚC XẮC 3D NỔI BẬT CHÍNH GIỮA BÀN CỜ
+      const center = document.createElement('div');
+      center.className = 'center-arena';
+      center.innerHTML = `
+        <div>
+          <div class="center-title">🏆 ĐẤU TRƯỜNG BẬC THẦY TUẦN HOÀN 🏆</div>
+          <div class="center-desc">Vận dụng kiến thức Cấu tạo Bảng tuần hoàn • Thi đấu đồng đội • Tích lũy điểm XP</div>
+        </div>
+
+        <div class="dice-action-area">
+          <div class="dice-cube" id="diceDisplay" onclick="rollDice()" title="Bấm trực tiếp vào viên xúc xắc để quay!">🎲</div>
+          <div class="turn-status">
+            <div class="turn-team" id="centerTurnTeam">
+              <span class="token-dot t-team-1" style="width:24px; height:24px;">1</span>
+              <span>Đang đến lượt: Nhóm 1</span>
+            </div>
+            <div class="turn-guide" id="centerTurnGuide">👉 Nhấp trực tiếp vào viên xúc xắc hoặc nút quay bên phải!</div>
+          </div>
+        </div>
+
+        <div class="quick-legend">
+          <div class="leg-item"><div class="leg-badge" style="background:#ef4444;"></div> Kim loại kiềm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#f59e0b;"></div> Kiềm thổ</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#0ea5e9;"></div> Halogen</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#6366f1;"></div> Khí hiếm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#22c55e;"></div> Phi kim</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#eab308;"></div> Á kim / Nhôm</div>
+          <div class="leg-item"><div class="leg-badge" style="background:#ec4899;"></div> Ô Thách đấu</div>
+        </div>
+      `;
+      grid.appendChild(center);
 
       renderTokens();
       renderScoreboard();
@@ -1383,20 +1386,25 @@ const centerTurn = document.getElementById('centerTurnTeam');
       playBeep(440, 'triangle', 0.1);
 
       const diceCube = document.getElementById('diceDisplay');
-      diceCube.classList.add('rolling');
+      const sidebarDice = document.getElementById('sidebarDiceDisplay');
+      if (diceCube) diceCube.classList.add('rolling');
+      if (sidebarDice) sidebarDice.classList.add('rolling');
       let rolls = 0;
 
       const rollTimer = setInterval(() => {
         rolls++;
         const rand = Math.floor(Math.random() * 6) + 1;
-        diceCube.innerText = rand;
+        if (diceCube) diceCube.innerText = rand;
+        if (sidebarDice) sidebarDice.innerText = rand;
         playBeep(300 + rolls * 40, 'sine', 0.05);
 
         if (rolls > 12) {
           clearInterval(rollTimer);
-          diceCube.classList.remove('rolling');
+          if (diceCube) diceCube.classList.remove('rolling');
+          if (sidebarDice) sidebarDice.classList.remove('rolling');
           const finalRoll = Math.floor(Math.random() * 6) + 1;
-          diceCube.innerText = finalRoll;
+          if (diceCube) diceCube.innerText = finalRoll;
+          if (sidebarDice) sidebarDice.innerText = finalRoll;
           playBeep(660, 'sine', 0.25);
           
           moveCurrentTeam(finalRoll);
