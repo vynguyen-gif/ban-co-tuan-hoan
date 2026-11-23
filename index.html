@@ -422,11 +422,7 @@
 
   <header>
     <div class="header-title">
-      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10 
-        <span style="background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-size: 0.8rem; padding: 4px 14px; border-radius: 999px; font-weight: 700; box-shadow: 0 0 12px rgba(16,185,129,0.6); vertical-align: middle; display: inline-flex; align-items: center; gap: 6px;">
-          ⚡ ĐÃ BẬT: Xoay vòng 72 câu hỏi chống trùng lặp
-        </span>
-      </h1>
+      <h1>⚛️ BÀN CỜ TUẦN HOÀN — ĐẤU TRƯỜNG NGUYÊN TỐ HÓA HỌC 10 <span class="badge" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; margin-left: 10px; font-weight: 600; display: inline-block; vertical-align: middle;">⚡ ĐÃ BẬT: Xoay vòng 72 câu hỏi chống trùng lặp</span></h1>
       <p>Trường THPT Bùi Thị Xuân – Mũi Né (Lâm Đồng) • Học cụ Gamification Chủ đề Cấu tạo Bảng tuần hoàn</p>
     </div>
     <div class="header-controls">
@@ -494,7 +490,7 @@
 
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="toggleAnswer()">👁️ Hiện đáp án / Gợi ý</button>
-        <button class="btn btn-primary" onclick="nextQuestionInModal()" style="background: linear-gradient(135deg, #0284c7, #0369a1); border: none; box-shadow: 0 0 10px rgba(2,132,199,0.5);">🔄 Đổi câu hỏi khác (Xoay vòng)</button>
+        <button class="btn btn-secondary" style="background:#4338ca;border-color:#6366f1;color:#fff;" onclick="switchModalQuestion()">🔄 Đổi câu hỏi khác (Chống trùng)</button>
         <button class="btn btn-danger" onclick="resolveTurn(false)">❌ Trả lời SAI / Bị cướp</button>
         <button class="btn btn-success" onclick="resolveTurn(true)">✅ Trả lời ĐÚNG (+XP)</button>
       </div>
@@ -541,27 +537,23 @@
     "sym": "🏁",
     "cat": "cat-start",
     "xp": 20,
-    "desc": "Cổng Phòng Thí Nghiệm
-+20 XP Khởi động",
+    "desc": "Cổng Phòng Thí Nghiệm\n+20 XP Khởi động",
     "questions": [
       {
         "q": "Nêu 3 nguyên tắc sắp xếp các nguyên tố hóa học trong bảng tuần hoàn hiện đại?",
-        "a": "1. Các nguyên tố được sắp xếp theo chiều tăng dần của điện tích hạt nhân nguyên tử.
-2. Các nguyên tố có cùng số lớp electron trong nguyên tử được xếp vào cùng một chu kì.
-3. Các nguyên tố có cùng số electron hóa trị được xếp vào cùng một nhóm."
+        "a": "1. Các nguyên tố được sắp xếp theo chiều tăng dần của điện tích hạt nhân nguyên tử.\n2. Các nguyên tố có cùng số lớp electron trong nguyên tử được xếp vào cùng một chu kì.\n3. Các nguyên tố có cùng số electron hóa trị được xếp vào cùng một nhóm."
       },
       {
         "q": "Bảng tuần hoàn hiện nay gồm bao nhiêu chu kì và bao nhiêu nhóm? Thế nào là chu kì nhỏ và chu kì lớn?",
-        "a": "- Gồm 7 chu kì (1, 2, 3 là chu kì nhỏ; 4, 5, 6, 7 là chu kì lớn).
-- Gồm 18 cột chia thành 8 nhóm A (từ IA đến VIIIA) và 8 nhóm B (từ IB đến VIIIB)."
+        "a": "- Gồm 7 chu kì (1, 2, 3 là chu kì nhỏ; 4, 5, 6, 7 là chu kì lớn).\n- Gồm 18 cột chia thành 8 nhóm A (từ IA đến VIIIA) và 8 nhóm B (từ IB đến VIIIB)."
       },
       {
         "q": "Nêu mối liên hệ giữa vị trí nguyên tố (Số thứ tự ô, Số chu kì, Số nhóm A) với cấu tạo nguyên tử của nó?",
-        "a": "1. Số thứ tự ô = Số hiệu nguyên tử (Z) = Số proton = Số electron.
-2. Số thứ tự chu kì = Số lớp electron của nguyên tử.
-3. Số thứ tự nhóm A = Số electron hóa trị = Số electron lớp ngoài cùng."
+        "a": "1. Số thứ tự ô = Số hiệu nguyên tử (Z) = Số proton = Số electron.\n2. Số thứ tự chu kì = Số lớp electron của nguyên tử.\n3. Số thứ tự nhóm A = Số electron hóa trị = Số electron lớp ngoài cùng."
       }
-    ]
+    ],
+    "q": "Nêu 3 nguyên tắc sắp xếp các nguyên tố hóa học trong bảng tuần hoàn hiện đại?",
+    "a": "1. Các nguyên tố được sắp xếp theo chiều tăng dần của điện tích hạt nhân nguyên tử.\n2. Các nguyên tố có cùng số lớp electron trong nguyên tử được xếp vào cùng một chu kì.\n3. Các nguyên tố có cùng số electron hóa trị được xếp vào cùng một nhóm."
   },
   {
     "num": 2,
@@ -584,7 +576,9 @@
         "q": "Trong phân tử H₂, hai nguyên tử Hydrogen liên kết với nhau bằng loại liên kết hóa học nào? Giải thích theo quy tắc Octet / Duet?",
         "a": "Liên kết cộng hóa trị không phân cực (H - H). Mỗi nguyên tử H góp chung 1 electron để đạt cấu hình 2e bền vững của khí hiếm Helium (quy tắc Duet)."
       }
-    ]
+    ],
+    "q": "Viết cấu hình electron của nguyên tử Hydrogen (Z=1)? Nêu vị trí (ô, chu kỳ, nhóm) của H trong bảng tuần hoàn?",
+    "a": "Cấu hình: 1s¹. Vị trí: Ô số 1, Chu kỳ 1 (có 1 lớp e), Nhóm IA (1e hóa trị, phân lớp s)."
   },
   {
     "num": 3,
@@ -607,7 +601,9 @@
         "q": "So sánh bán kính nguyên tử của Helium (Z=2) và Hydrogen (Z=1) trong cùng chu kỳ 1? Giải thích theo quy luật biến đổi bán kính?",
         "a": "r(He) < r(H). Giải thích: Trong cùng chu kì 1, từ H sang He điện tích hạt nhân tăng từ +1 lên +2, lực hút tĩnh điện giữa hạt nhân với electron lớp ngoài cùng mạnh hơn làm bán kính co lại."
       }
-    ]
+    ],
+    "q": "Helium chỉ có 2 electron nhưng vì sao lại được xếp vào nhóm VIIIA mà không phải nhóm IIA?",
+    "a": "Vì lớp electron thứ nhất của He đã bão hòa tối đa 2e (cấu hình vỏ 1s² bền vững của khí hiếm), mang đầy đủ tính chất trơ của nhóm VIIIA."
   },
   {
     "num": 4,
@@ -616,8 +612,7 @@
     "name": "HÀO QUANG KHÍ HIẾM",
     "cat": "cat-special",
     "xp": 15,
-    "desc": "Cấu hình 8e bền vững!
-Miễn trừ điểm • +15 XP",
+    "desc": "Cấu hình 8e bền vững!\nMiễn trừ điểm • +15 XP",
     "questions": [
       {
         "q": "Nhóm VIIIA (nhóm khí hiếm) nằm ở vị trí nào trong BTH? Nêu đặc điểm cấu hình electron lớp ngoài cùng của các nguyên tử khí hiếm?",
@@ -629,10 +624,11 @@ Miễn trừ điểm • +15 XP",
       },
       {
         "q": "Nêu 2 ứng dụng thực tế quan trọng của các khí hiếm (Helium, Neon, Argon) trong đời sống và kỹ thuật?",
-        "a": "1. Helium: Dùng bơm khí cầu, làm lạnh nam châm siêu dẫn máy chụp MRI.
-2. Neon / Argon: Dùng nạp vào bóng đèn quảng cáo phát sáng, tạo khí bảo vệ mối hàn kim loại chống oxi hóa."
+        "a": "1. Helium: Dùng bơm khí cầu, làm lạnh nam châm siêu dẫn máy chụp MRI.\n2. Neon / Argon: Dùng nạp vào bóng đèn quảng cáo phát sáng, tạo khí bảo vệ mối hàn kim loại chống oxi hóa."
       }
-    ]
+    ],
+    "q": "Nhóm VIIIA (nhóm khí hiếm) nằm ở vị trí nào trong BTH? Nêu đặc điểm cấu hình electron lớp ngoài cùng của các nguyên tử khí hiếm?",
+    "a": "Vị trí: Cột tận cùng bên phải BTH, kết thúc mỗi chu kì. Đặc điểm: Lớp ngoài cùng bão hòa tối đa 8 electron (ns²np⁶), riêng Helium là 1s² (2e bền vững)."
   },
   {
     "num": 5,
@@ -655,7 +651,9 @@ Miễn trừ điểm • +15 XP",
         "q": "Viết cấu hình electron của Li (Z=3). Xác định số electron độc thân và số orbital có electron của nguyên tử Lithium?",
         "a": "Cấu hình e: 1s²2s¹. Có 1 electron độc thân (ở orbital 2s). Có 2 orbital chứa electron (1s và 2s)."
       }
-    ]
+    ],
+    "q": "Nguyên tử Li (Z=3) có xu hướng nhường hay nhận bao nhiêu electron để đạt cấu hình electron bền vững của khí hiếm nào? Viết ion tạo thành?",
+    "a": "Li (1s²2s¹) có xu hướng nhường 1 electron ở lớp ngoài cùng để tạo thành cation Li⁺ (1s²), đạt cấu hình electron bền vững của khí hiếm Helium."
   },
   {
     "num": 6,
@@ -678,7 +676,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh tính kim loại của Beryllium (Z=4) với Magnesium (Z=12) trong cùng nhóm IIA? Giải thích ngắn gọn?",
         "a": "Tính kim loại của Be yếu hơn Mg (Be < Mg). Vì trong nhóm IIA từ trên xuống dưới, bán kính tăng dần, lực hút hạt nhân giảm nên nguyên tử dễ nhường 2e hơn."
       }
-    ]
+    ],
+    "q": "Beryllium (Z=4) thuộc nhóm nào? Cho biết số electron hóa trị của Be và viết công thức oxide cao nhất của nó?",
+    "a": "Nhóm IIA. Số e hóa trị = 2 (2s²). Công thức oxide cao nhất: BeO (Beryllium oxide - có tính lưỡng tính)."
   },
   {
     "num": 7,
@@ -701,7 +701,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh độ âm điện của Boron (Z=5) với Carbon (Z=6) và Beryllium (Z=4) trong cùng chu kì 2?",
         "a": "Theo chiều tăng Z trong chu kì 2: chi(Be) < chi(B) < chi(C). Độ âm điện tăng dần từ trái sang phải."
       }
-    ]
+    ],
+    "q": "Nguyên tố Boron (Z=5) là kim loại hay phi kim? Viết cấu hình electron của Boron và xác định số electron lớp ngoài cùng?",
+    "a": "Boron là phi kim (hoặc á kim). Cấu hình e: 1s²2s²2p¹. Số electron lớp ngoài cùng = 3 (ở lớp n=2)."
   },
   {
     "num": 8,
@@ -724,7 +726,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh tính phi kim của Carbon (Z=6) với Silicon (Z=14) trong cùng nhóm IVA? Giải thích theo quy luật biến đổi nhóm A?",
         "a": "Tính phi kim của Carbon mạnh hơn Silicon (C > Si). Giải thích: Trong nhóm IVA đi từ trên xuống dưới, bán kính tăng dần, khả năng hút electron giảm -> tính phi kim giảm dần."
       }
-    ]
+    ],
+    "q": "Nguyên tử Carbon (Z=6) có mấy electron hóa trị? Nêu các dạng thù hình phổ biến của đơn chất Carbon trong tự nhiên?",
+    "a": "Có 4 electron hóa trị (2s²2p²). Các dạng thù hình phổ biến: Kim cương, than chì (graphite), than vô định hình, graphene, fullerene."
   },
   {
     "num": 9,
@@ -747,7 +751,9 @@ Miễn trừ điểm • +15 XP",
         "q": "Viết cấu hình electron của nguyên tử Nitrogen (Z=7). Cho biết số electron độc thân của nguyên tử Nitrogen ở trạng thái cơ bản?",
         "a": "Cấu hình e: 1s²2s²2p³. Phân lớp 2p có 3 orbital, theo quy tắc Hund có đúng 3 electron độc thân."
       }
-    ]
+    ],
+    "q": "So sánh độ âm điện và tính phi kim của Nitrogen (Z=7) với Phosphorus (Z=15) trong nhóm VA? Giải thích?",
+    "a": "Độ âm điện: N (3.04) > P (2.19). Tính phi kim: N > P. Giải thích: Trong nhóm VA từ trên xuống, số lớp electron tăng, bán kính tăng nên lực hút hạt nhân giảm, độ âm điện và tính phi kim giảm."
   },
   {
     "num": 10,
@@ -770,7 +776,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh tính phi kim và bán kính nguyên tử giữa Oxygen (Z=8) và Sulfur (Z=16) trong nhóm VIA?",
         "a": "Tính phi kim: O > S (giảm dần từ trên xuống). Bán kính nguyên tử: r(O) < r(S) (tăng dần do Sulfur có 3 lớp e, Oxygen có 2 lớp e)."
       }
-    ]
+    ],
+    "q": "Trong toàn bộ bảng tuần hoàn, nguyên tố nào có độ âm điện lớn hơn Oxygen (Z=8)? Nêu giá trị độ âm điện của Oxygen?",
+    "a": "Chỉ có duy nhất nguyên tố Fluorine (F, chi = 3.98) có độ âm điện lớn hơn Oxygen. Độ âm điện của Oxygen là 3.44 (lớn thứ 2 trong BTH)."
   },
   {
     "num": 11,
@@ -793,7 +801,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh bán kính nguyên tử của Fluorine (Z=9) với Oxygen (Z=8) và Neon (Z=10) trong chu kì 2?",
         "a": "Trong chu kì 2 từ trái sang phải, bán kính giảm dần: r(O) > r(F). (Riêng Neon là khí hiếm đo theo bán kính Van der Waals)."
       }
-    ]
+    ],
+    "q": "Vì sao Fluorine (Z=9) là nguyên tố phi kim có tính oxi hóa mạnh nhất trong toàn bộ bảng tuần hoàn?",
+    "a": "Vì Fluorine có độ âm điện lớn nhất (3.98), bán kính nguyên tử rất nhỏ (71 pm), hạt nhân hút electron cực kỳ mạnh mẽ để đạt cấu hình 8e bền vững."
   },
   {
     "num": 12,
@@ -802,13 +812,11 @@ Miễn trừ điểm • +15 XP",
     "name": "BẪY BÁN KÍNH",
     "cat": "cat-special",
     "xp": 20,
-    "desc": "Lực hút hạt nhân cực mạnh!
-Đối mặt thử thách • +20 XP",
+    "desc": "Lực hút hạt nhân cực mạnh!\nĐối mặt thử thách • +20 XP",
     "questions": [
       {
         "q": "Quy luật biến đổi bán kính nguyên tử: Trong một chu kỳ và trong một nhóm A, bán kính biến đổi như thế nào theo chiều tăng của Z?",
-        "a": "- Trong một chu kì (Trái -> Phải): Bán kính nguyên tử giảm dần.
-- Trong một nhóm A (Trên -> Dưới): Bán kính nguyên tử tăng dần."
+        "a": "- Trong một chu kì (Trái -> Phải): Bán kính nguyên tử giảm dần.\n- Trong một nhóm A (Trên -> Dưới): Bán kính nguyên tử tăng dần."
       },
       {
         "q": "Giải thích bản chất: Vì sao trong chu kì 3, điện tích hạt nhân Z tăng từ 11 (Na) đến 17 (Cl) nhưng bán kính lại co nhỏ lại?",
@@ -818,7 +826,9 @@ Miễn trừ điểm • +15 XP",
         "q": "Sắp xếp các nguyên tử sau theo chiều bán kính tăng dần: F (Z=9), Cl (Z=17), Br (Z=35), I (Z=53)? Giải thích?",
         "a": "Thứ tự tăng dần: r(F) < r(Cl) < r(Br) < r(I). Giải thích: Các nguyên tố thuộc cùng nhóm VIIA, đi từ trên xuống dưới số lớp electron tăng dần (từ 2 lên 5 lớp) làm bán kính tăng dần."
       }
-    ]
+    ],
+    "q": "Quy luật biến đổi bán kính nguyên tử: Trong một chu kỳ và trong một nhóm A, bán kính biến đổi như thế nào theo chiều tăng của Z?",
+    "a": "- Trong một chu kì (Trái -> Phải): Bán kính nguyên tử giảm dần.\n- Trong một nhóm A (Trên -> Dưới): Bán kính nguyên tử tăng dần."
   },
   {
     "num": 13,
@@ -841,7 +851,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh năng lượng ion hóa thứ nhất (I₁) của Neon (Z=10) với Fluorine (Z=9) và Sodium (Z=11)?",
         "a": "Neon có cấu hình 8e bão hòa cực bền nên năng lượng ion hóa thứ nhất rất cao: I₁(Ne) > I₁(F) >> I₁(Na). Cực kỳ khó bứt 1e ra khỏi nguyên tử Neon."
       }
-    ]
+    ],
+    "q": "Viết cấu hình electron của Neon (Z=10). Cho biết số electron lớp ngoài cùng và giải thích vì sao Neon không tạo hợp chất hóa học?",
+    "a": "Cấu hình: 1s²2s²2p⁶. Có 8 electron lớp ngoài cùng (bão hòa octet bền vững), các orbital đều chứa cặp e ghép đôi nên phân tử đơn nguyên tử rất trơ, không tạo liên kết."
   },
   {
     "num": 14,
@@ -854,8 +866,7 @@ Miễn trừ điểm • +15 XP",
     "questions": [
       {
         "q": "So sánh bán kính nguyên tử và tính kim loại của Sodium (Z=11) với Chlorine (Z=17) ở hai đầu chu kì 3?",
-        "a": "- Bán kính: r(Na) = 186 pm > r(Cl) = 99 pm (Na lớn hơn Cl rất nhiều).
-- Tính kim loại: Na là kim loại điển hình, mạnh; còn Cl là phi kim điển hình, không có tính kim loại."
+        "a": "- Bán kính: r(Na) = 186 pm > r(Cl) = 99 pm (Na lớn hơn Cl rất nhiều).\n- Tính kim loại: Na là kim loại điển hình, mạnh; còn Cl là phi kim điển hình, không có tính kim loại."
       },
       {
         "q": "Viết phương trình hóa học khi cho kim loại Sodium (Z=11) tác dụng với nước. Dung dịch thu được làm quỳ tím đổi màu gì?",
@@ -865,7 +876,9 @@ Miễn trừ điểm • +15 XP",
         "q": "Viết cấu hình electron của nguyên tử Na (Z=11) và ion Na⁺. Cấu hình của Na⁺ giống khí hiếm nào?",
         "a": "Na: 1s²2s²2p⁶3s¹ ([Ne]3s¹). Khi nhường 1e: Na⁺: 1s²2s²2p⁶. Cấu hình của Na⁺ giống hệt khí hiếm Neon (Z=10)."
       }
-    ]
+    ],
+    "q": "So sánh bán kính nguyên tử và tính kim loại của Sodium (Z=11) với Chlorine (Z=17) ở hai đầu chu kì 3?",
+    "a": "- Bán kính: r(Na) = 186 pm > r(Cl) = 99 pm (Na lớn hơn Cl rất nhiều).\n- Tính kim loại: Na là kim loại điển hình, mạnh; còn Cl là phi kim điển hình, không có tính kim loại."
   },
   {
     "num": 15,
@@ -888,7 +901,9 @@ Miễn trừ điểm • +15 XP",
         "q": "So sánh tính kim loại của Magnesium (Z=12) với Aluminium (Z=13) trong cùng chu kì 3? Giải thích theo quy luật biến đổi?",
         "a": "Tính kim loại của Mg mạnh hơn Al (Mg > Al). Giải thích: Trong chu kì 3 theo chiều tăng Z từ trái sang phải, điện tích hạt nhân tăng, bán kính giảm, tính kim loại giảm dần."
       }
-    ]
+    ],
+    "q": "So sánh tính base của Magnesium hydroxide Mg(OH)₂ với Sodium hydroxide NaOH trong chu kỳ 3?",
+    "a": "Tính base của NaOH mạnh hơn Mg(OH)₂ (NaOH là base mạnh tan hoàn toàn, Mg(OH)₂ là base yếu ít tan/kết tủa trắng). Quy luật: Trong chu kỳ đi từ trái sang phải, tính base của các hydroxide giảm dần."
   },
   {
     "num": 16,
@@ -897,25 +912,23 @@ Miễn trừ điểm • +15 XP",
     "name": "VÒNG XOÁY ĐỘ ÂM ĐIỆN",
     "cat": "cat-special",
     "xp": 30,
-    "desc": "Thách đấu đối kháng!
-Tranh đoạt điểm thưởng • +30 XP",
+    "desc": "Thách đấu đối kháng!\nTranh đoạt điểm thưởng • +30 XP",
     "questions": [
       {
         "q": "Khái niệm Độ âm điện là gì? Nêu quy luật biến đổi độ âm điện trong một chu kỳ và trong một nhóm A?",
-        "a": "- Khái niệm: Độ âm điện của nguyên tử đặc trưng cho khả năng hút electron của nguyên tử đó khi hình thành liên kết hóa học.
-- Quy luật: Trong một chu kì (Trái -> Phải), độ âm điện tăng dần; Trong một nhóm A (Trên -> Dưới), độ âm điện giảm dần."
+        "a": "- Khái niệm: Độ âm điện của nguyên tử đặc trưng cho khả năng hút electron của nguyên tử đó khi hình thành liên kết hóa học.\n- Quy luật: Trong một chu kì (Trái -> Phải), độ âm điện tăng dần; Trong một nhóm A (Trên -> Dưới), độ âm điện giảm dần."
       },
       {
         "q": "Hiệu độ âm điện (Δchi) giữa hai nguyên tử liên kết giúp dự đoán loại liên kết hóa học như thế nào?",
-        "a": "- Nếu 0 <= Δchi < 0.4: Liên kết cộng hóa trị không phân cực.
-- Nếu 0.4 <= Δchi < 1.7: Liên kết cộng hóa trị có phân cực.
-- Nếu Δchi >= 1.7: Liên kết ion."
+        "a": "- Nếu 0 <= Δchi < 0.4: Liên kết cộng hóa trị không phân cực.\n- Nếu 0.4 <= Δchi < 1.7: Liên kết cộng hóa trị có phân cực.\n- Nếu Δchi >= 1.7: Liên kết ion."
       },
       {
         "q": "Sắp xếp các nguyên tố sau theo chiều độ âm điện tăng dần: K (Z=19), Na (Z=11), Cl (Z=17), F (Z=9)? Giải thích?",
         "a": "Thứ tự tăng dần: chi(K) < chi(Na) < chi(Cl) < chi(F). Giải thích: K và Na nhóm IA có độ âm điện nhỏ (K chu kì 4 < Na chu kì 3); Cl và F nhóm VIIA có độ âm điện lớn (Cl chu kì 3 < F chu kì 2)."
       }
-    ]
+    ],
+    "q": "Khái niệm Độ âm điện là gì? Nêu quy luật biến đổi độ âm điện trong một chu kỳ và trong một nhóm A?",
+    "a": "- Khái niệm: Độ âm điện của nguyên tử đặc trưng cho khả năng hút electron của nguyên tử đó khi hình thành liên kết hóa học.\n- Quy luật: Trong một chu kì (Trái -> Phải), độ âm điện tăng dần; Trong một nhóm A (Trên -> Dưới), độ âm điện giảm dần."
   },
   {
     "num": 17,
@@ -938,7 +951,9 @@ Tranh đoạt điểm thưởng • +30 XP",
         "q": "Vì sao đồ dùng bằng nhôm (Aluminium) rất bền trong không khí và nước ở nhiệt độ thường dù nhôm là kim loại hoạt động khá mạnh?",
         "a": "Vì trên bề mặt kim loại nhôm có lớp màng oxide Al₂O₃ cực kỳ mỏng, mịn và rất bền vững ngăn cản không cho nhôm tiếp tục phản ứng với không khí và nước."
       }
-    ]
+    ],
+    "q": "Hydroxide của Aluminium là Al(OH)₃ có tính chất gì đặc biệt về tính acid - base?",
+    "a": "Al(OH)₃ là hydroxide lưỡng tính: Vừa có thể tác dụng với dung dịch acid mạnh (như HCl), vừa có thể tác dụng với dung dịch base mạnh (như NaOH)."
   },
   {
     "num": 18,
@@ -955,14 +970,15 @@ Tranh đoạt điểm thưởng • +30 XP",
       },
       {
         "q": "Viết công thức oxide cao nhất và hydroxide tương ứng của Silicon (Z=14). Nêu tính chất acid - base của chúng?",
-        "a": "- Oxide cao nhất: SiO₂ (Silicon dioxide - oxide acid).
-- Hydroxide tương ứng: H₂SiO₃ (Silicic acid - axit rất yếu, không tan trong nước tạo dạng keo)."
+        "a": "- Oxide cao nhất: SiO₂ (Silicon dioxide - oxide acid).\n- Hydroxide tương ứng: H₂SiO₃ (Silicic acid - axit rất yếu, không tan trong nước tạo dạng keo)."
       },
       {
         "q": "So sánh độ âm điện và bán kính nguyên tử giữa Silicon (Z=14) và Phosphorus (Z=15) trong chu kì 3?",
         "a": "Trong chu kì 3 từ Si sang P (chiều tăng Z): Độ âm điện tăng chi(Si) < chi(P); Bán kính nguyên tử giảm r(Si) > r(P)."
       }
-    ]
+    ],
+    "q": "Silicon (Z=14) thuộc loại nguyên tố nào (kim loại, phi kim hay á kim / bán dẫn)? Nêu ứng dụng nổi bật của Silicon trong công nghệ?",
+    "a": "Silicon là chất bán dẫn (á kim). Ứng dụng nổi bật: Sản xuất tấm pin năng lượng mặt trời và làm vật liệu chế tạo vi mạch, chip bán dẫn trong máy tính, điện thoại."
   },
   {
     "num": 19,
@@ -975,8 +991,7 @@ Tranh đoạt điểm thưởng • +30 XP",
     "questions": [
       {
         "q": "Viết công thức oxide cao nhất và axit tương ứng của Phosphorus (Z=15). Axit này có tính axit mạnh hay trung bình?",
-        "a": "- Oxide cao nhất: P₂O₅ (Phosphorus pentoxide).
-- Axit tương ứng: H₃PO₄ (Phosphoric acid). Đây là axit có độ mạnh trung bình, yếu hơn H₂SO₄ và HClO₄."
+        "a": "- Oxide cao nhất: P₂O₅ (Phosphorus pentoxide).\n- Axit tương ứng: H₃PO₄ (Phosphoric acid). Đây là axit có độ mạnh trung bình, yếu hơn H₂SO₄ và HClO₄."
       },
       {
         "q": "Viết cấu hình electron của Phosphorus (Z=15). Cho biết số orbital chứa electron và số electron độc thân của P?",
@@ -986,7 +1001,9 @@ Tranh đoạt điểm thưởng • +30 XP",
         "q": "So sánh tính phi kim và độ âm điện của Phosphorus (Z=15) với Chlorine (Z=17) trong cùng chu kì 3?",
         "a": "Trong chu kì 3 theo chiều tăng Z từ P sang Cl: Độ âm điện tăng đều (P = 2.19 < Cl = 3.16); Tính phi kim tăng mạnh (P < Cl)."
       }
-    ]
+    ],
+    "q": "Viết công thức oxide cao nhất và axit tương ứng của Phosphorus (Z=15). Axit này có tính axit mạnh hay trung bình?",
+    "a": "- Oxide cao nhất: P₂O₅ (Phosphorus pentoxide).\n- Axit tương ứng: H₃PO₄ (Phosphoric acid). Đây là axit có độ mạnh trung bình, yếu hơn H₂SO₄ và HClO₄."
   },
   {
     "num": 20,
@@ -1009,7 +1026,9 @@ Tranh đoạt điểm thưởng • +30 XP",
         "q": "So sánh bán kính nguyên tử giữa Sulfur (Z=16) và ion sulfide (S²⁻). Giải thích nguyên nhân?",
         "a": "r(S²⁻) > r(S) (bán kính ion âm luôn lớn hơn bán kính nguyên tử). Giải thích: Khi nhận thêm 2 electron, số proton giữ nguyên nhưng số e tăng làm tăng lực đẩy giữa các electron khiến lớp vỏ mở rộng ra."
       }
-    ]
+    ],
+    "q": "So sánh tính acid của H₂SO₄ với H₃PO₄ và HClO₄. Nêu quy luật biến đổi tính acid của các hydroxide trong chu kỳ 3?",
+    "a": "Thứ tự tính acid tăng dần: H₃PO₄ < H₂SO₄ < HClO₄. Quy luật: Trong một chu kì theo chiều tăng của Z, tính acid của các hydroxide có chứa oxygen tăng dần."
   },
   {
     "num": 21,
@@ -1032,7 +1051,9 @@ Tranh đoạt điểm thưởng • +30 XP",
         "q": "So sánh tính phi kim và độ âm điện của Chlorine (Z=17) với Fluorine (Z=9) trong nhóm VIIA?",
         "a": "Trong nhóm VIIA từ trên xuống dưới (F -> Cl): Độ âm điện giảm chi(Cl) = 3.16 < chi(F) = 3.98; Tính phi kim giảm (Cl yếu hơn F)."
       }
-    ]
+    ],
+    "q": "Viết công thức acid có chứa oxygen cao nhất của Chlorine (Z=17). Axit này có độ mạnh như thế nào trong dãy các acid chu kỳ 3?",
+    "a": "Axit cao nhất: HClO₄ (Perchloric acid). Đây là axit mạnh nhất trong toàn bộ chu kỳ 3, đồng thời là một trong những axit vô cơ mạnh nhất được biết."
   },
   {
     "num": 22,
@@ -1049,15 +1070,15 @@ Tranh đoạt điểm thưởng • +30 XP",
       },
       {
         "q": "Khí Argon chiếm khoảng 0.93% thể tích khí quyển. Nêu 2 ứng dụng kỹ thuật quan trọng của khí Argon?",
-        "a": "1. Làm môi trường khí bảo vệ trong công nghệ hàn kim loại (hàn TIG, hàn MIG) để mối hàn không bị oxi hóa.
-2. Nạp vào bóng đèn dây tóc để bảo vệ sợi vonfram không bị bốc hơi và cháy ở nhiệt độ cao."
+        "a": "1. Làm môi trường khí bảo vệ trong công nghệ hàn kim loại (hàn TIG, hàn MIG) để mối hàn không bị oxi hóa.\n2. Nạp vào bóng đèn dây tóc để bảo vệ sợi vonfram không bị bốc hơi và cháy ở nhiệt độ cao."
       },
       {
         "q": "So sánh bán kính nguyên tử và điện tích hạt nhân của Argon (Z=18) với Chlorine (Z=17) và Potassium (Z=19)?",
-        "a": "- Điện tích hạt nhân tăng dần: Cl (Z=17) < Ar (Z=18) < K (Z=19).
-- Potassium (Z=19) bắt đầu chu kì 4 có 4 lớp electron nên có bán kính lớn hơn hẳn Argon và Chlorine (chỉ có 3 lớp e)."
+        "a": "- Điện tích hạt nhân tăng dần: Cl (Z=17) < Ar (Z=18) < K (Z=19).\n- Potassium (Z=19) bắt đầu chu kì 4 có 4 lớp electron nên có bán kính lớn hơn hẳn Argon và Chlorine (chỉ có 3 lớp e)."
       }
-    ]
+    ],
+    "q": "Viết cấu hình electron của Argon (Z=18). Cho biết Argon kết thúc chu kỳ mấy trong bảng tuần hoàn?",
+    "a": "Cấu hình: 1s²2s²2p⁶3s²3p⁶ ([Ne]3s²3p⁶). Có 8 electron lớp ngoài cùng bão hòa octet. Argon kết thúc chu kì 3 của bảng tuần hoàn."
   },
   {
     "num": 23,
@@ -1080,7 +1101,9 @@ Tranh đoạt điểm thưởng • +30 XP",
         "q": "Viết cấu hình electron của ion K⁺ hình thành từ Potassium (Z=19). Ion K⁺ có cấu hình electron giống khí hiếm nào?",
         "a": "Khi nhường 1 electron ở phân lớp 4s: K⁺: 1s²2s²2p⁶3s²3p⁶. Cấu hình này giống hệt khí hiếm Argon (Z=18)."
       }
-    ]
+    ],
+    "q": "So sánh tính kim loại của Potassium (Z=19) với Sodium (Z=11) trong nhóm IA. Viết cấu hình electron của K?",
+    "a": "Cấu hình e của K: 1s²2s²2p⁶3s²3p⁶4s¹ ([Ar]4s¹). Tính kim loại: K > Na (mạnh hơn Sodium). Giải thích: K có 4 lớp e, bán kính lớn hơn Na nên electron ngoài cùng dễ bứt ra hơn."
   },
   {
     "num": 24,
@@ -1097,14 +1120,15 @@ Tranh đoạt điểm thưởng • +30 XP",
       },
       {
         "q": "So sánh tính kim loại của Calcium (Z=20) với Magnesium (Z=12) trong cùng nhóm IIA và với Potassium (Z=19) trong cùng chu kì 4?",
-        "a": "- So với Mg (cùng nhóm IIA): Tính kim loại của Ca mạnh hơn Mg (Ca > Mg) do bán kính lớn hơn.
-- So với K (cùng chu kì 4): Tính kim loại của Ca yếu hơn K (K > Ca) do trong chu kì từ trái sang phải tính kim loại giảm."
+        "a": "- So với Mg (cùng nhóm IIA): Tính kim loại của Ca mạnh hơn Mg (Ca > Mg) do bán kính lớn hơn.\n- So với K (cùng chu kì 4): Tính kim loại của Ca yếu hơn K (K > Ca) do trong chu kì từ trái sang phải tính kim loại giảm."
       },
       {
         "q": "Hợp chất nào của Calcium là thành phần chính của đá vôi, vỏ sò, thạch nhũ trong hang động? Viết công thức hóa học của nó?",
         "a": "Calcium carbonate, công thức hóa học là CaCO₃. Hợp chất này kết tủa màu trắng, tan trong nước có chứa CO₂ tạo thạch nhũ hang động."
       }
-    ]
+    ],
+    "q": "Viết cấu hình electron của Calcium (Z=20). Xác định vị trí (ô, chu kỳ, nhóm) của Ca trong bảng tuần hoàn?",
+    "a": "Cấu hình e: 1s²2s²2p⁶3s²3p⁶4s² ([Ar]4s²). Vị trí: Ô số 20, Chu kỳ 4 (có 4 lớp electron), Nhóm IIA (nguyên tố s, có 2e hóa trị)."
   }
 ];
 
@@ -1320,36 +1344,48 @@ Tranh đoạt điểm thưởng • +30 XP",
       if (c) c.classList.add('active-cell');
     }
 
-    function triggerChallenge(cellId) {
-      const sp = boardSpaces[cellId];
-      currentSpace = sp;
+    function renderModalCard(sp, qIdx) {
+      if (qIdx === undefined) qIdx = sp.currentQIdx || 0;
+      sp.currentQIdx = qIdx;
       const cur = teams[currentTeamIdx];
       const numFormatted = sp.num < 10 ? '0' + sp.num : sp.num;
+      const totalQ = (sp.questions && sp.questions.length) ? sp.questions.length : 1;
+      const qItem = (sp.questions && sp.questions.length) ? sp.questions[qIdx] : { q: sp.q, a: sp.a };
+      const qNum = qIdx + 1;
 
-      // THUẬT TOÁN XOAY VÒNG THÔNG MINH: CHỐNG TRÙNG LẶP CÂU HỎI KHI NHIỀU NHÓM RƠI VÀO CÙNG 1 Ô
-      if (sp.currentQIdx === undefined) {
-        sp.currentQIdx = 0;
-      } else {
-        // Nếu ô này đã được nhóm trước kích hoạt thì tự động xoay vòng sang câu hỏi tiếp theo
-        sp.currentQIdx = (sp.currentQIdx + 1) % sp.questions.length;
-      }
-
-      const qItem = sp.questions[sp.currentQIdx];
-      const qIndexNum = sp.currentQIdx + 1;
-      const totalQ = sp.questions.length;
-
-      let badgeHtml = `THẺ SỐ ${numFormatted} — +${sp.xp} XP • [Câu hỏi ${qIndexNum}/${totalQ}]`;
-      if (sp.currentQIdx > 0) {
-        badgeHtml += ` <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 10px rgba(225,29,72,0.5);">🔥 ĐỔI CÂU HỎI MỚI (Tránh trùng nhóm trước!)</span>`;
+      let badgeHtml = `THẺ SỐ ${numFormatted} — +${sp.xp} XP • [Câu hỏi ${qNum}/${totalQ}]`;
+      if (qIdx > 0) {
+        badgeHtml += ` <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 8px rgba(225,29,72,0.5);">🔥 CÂU HỎI MỚI (Lượt ${qNum})</span>`;
       }
 
       document.getElementById('modalBadge').innerHTML = badgeHtml;
       document.getElementById('modalTeamName').innerText = `Lượt: ${cur.name}`;
       document.getElementById('modalElementTitle').innerText = sp.z ? `Ô ${numFormatted}: ${sp.name} (${sp.sym}) — Z = ${sp.z}` : `Ô ${numFormatted}: ${sp.name}`;
-      document.getElementById('modalQuestion').innerHTML = `<strong>Nhiệm vụ thử thách (45 giây):</strong><br>${qItem.q}`;
-      document.getElementById('modalAnswer').innerHTML = `<strong>Đáp án chuẩn & Hướng dẫn chấm Rubric (Câu ${qIndexNum}):</strong><br>${qItem.a.replace(/
-/g, '<br>')}`;
+      document.getElementById('modalQuestion').innerHTML = `<strong>Nhiệm vụ thử thách (45 giây) — Câu ${qNum}/${totalQ}:</strong><br>${qItem.q}`;
+      document.getElementById('modalAnswer').innerHTML = `<strong>Đáp án chuẩn & Hướng dẫn chấm Rubric (Câu ${qNum}):</strong><br>${qItem.a.replace(/\n/g, '<br>')}`;
       document.getElementById('modalAnswer').style.display = 'none';
+    }
+
+    function switchModalQuestion() {
+      if (!currentSpace || !currentSpace.questions || currentSpace.questions.length <= 1) return;
+      const nextIdx = ((currentSpace.currentQIdx || 0) + 1) % currentSpace.questions.length;
+      renderModalCard(currentSpace, nextIdx);
+      playBeep(600, 'sine', 0.15);
+      startTimer(45);
+    }
+
+    function triggerChallenge(cellId) {
+      const sp = boardSpaces[cellId];
+      currentSpace = sp;
+
+      // Tự động xoay vòng sang câu hỏi tiếp theo nếu ô này đã được nhóm trước kích hoạt
+      if (sp.currentQIdx === undefined) {
+        sp.currentQIdx = 0;
+      } else {
+        sp.currentQIdx = (sp.currentQIdx + 1) % sp.questions.length;
+      }
+
+      renderModalCard(sp, sp.currentQIdx);
 
       document.getElementById('cardModal').style.display = 'flex';
       playBeep(780, 'sine', 0.3);
@@ -1392,25 +1428,6 @@ Tranh đoạt điểm thưởng • +30 XP",
           playBeep(220, 'sawtooth', 0.6);
         }
       }, 1000);
-    }
-
-    
-    function nextQuestionInModal() {
-      if (!currentSpace || !currentSpace.questions || currentSpace.questions.length <= 1) return;
-      currentSpace.currentQIdx = (currentSpace.currentQIdx + 1) % currentSpace.questions.length;
-      const qItem = currentSpace.questions[currentSpace.currentQIdx];
-      const qIndexNum = currentSpace.currentQIdx + 1;
-      const totalQ = currentSpace.questions.length;
-      const numFormatted = currentSpace.num < 10 ? '0' + currentSpace.num : currentSpace.num;
-
-      let badgeHtml = `THẺ SỐ ${numFormatted} — +${currentSpace.xp} XP • [Câu hỏi ${qIndexNum}/${totalQ}]`;
-      badgeHtml += ` <span style="background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; margin-left: 8px; font-weight: bold; box-shadow: 0 0 10px rgba(225,29,72,0.5);">🔥 ĐÃ ĐỔI CÂU HỎI MỚI (${qIndexNum}/${totalQ})</span>`;
-
-      document.getElementById('modalBadge').innerHTML = badgeHtml;
-      document.getElementById('modalQuestion').innerHTML = `<strong>Nhiệm vụ thử thách (45 giây):</strong><br>${qItem.q}`;
-      document.getElementById('modalAnswer').innerHTML = `<strong>Đáp án chuẩn & Hướng dẫn chấm Rubric (Câu ${qIndexNum}):</strong><br>${qItem.a.replace(/\n/g, '<br>')}`;
-      document.getElementById('modalAnswer').style.display = 'none';
-      playBeep(620, 'sine', 0.15);
     }
 
     function toggleAnswer() {
