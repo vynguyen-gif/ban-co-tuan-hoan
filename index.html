@@ -491,18 +491,7 @@
     <div class="sidebar">
       <div class="panel">
         <h2>🎲 LƯỢT CHƠI HIỆN TẠI</h2>
-        <!-- Bộ chọn chế độ xuất phát & cơ chế Pauli -->
-        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 8px; padding: 10px; margin: 10px 0; text-align: left;">
-          <label style="font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 5px; font-weight: 700;">🚦 VỊ TRÍ XUẤT PHÁT:</label>
-          <select id="startModeSelect" onchange="changeStartMode(this.value)" style="width: 100%; background: #1e293b; border: 1px solid #6366f1; color: #f8fafc; border-radius: 6px; padding: 6px 8px; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer;">
-            <option value="staggered" selected>🚀 6 Cổng Phân Tán (Khuyên dùng - Tránh tắc đường)</option>
-            <option value="single">🏁 Cùng Xuất Phát Ô 01 (1 Cổng tập trung)</option>
-          </select>
-          <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 6px; display: flex; align-items: center; justify-content: space-between;">
-            <span>⚡ Lực đẩy Pauli:</span>
-            <span style="color: #4ade80; font-weight: bold; background: rgba(74,222,128,0.15); padding: 1px 6px; border-radius: 4px;">TỰ ĐỘNG BẬT</span>
-          </div>
-        </div>
+        
         <div style="text-align: center; margin: 10px 0;">
           <div class="turn-team" id="sidebarTurnTeam">
             <span class="token-dot t-team-1" style="width:22px; height:22px;">1</span>
@@ -1246,15 +1235,12 @@
         cell.onclick = () => openCardManually(idx);
 
         const numStr = `Ô ${sp.num < 10 ? '0' + sp.num : sp.num}`;
-        const gateNum = (idx % 4 === 0) ? (idx / 4 + 1) : null;
-        const gateBadge = (startMode === 'staggered' && gateNum) 
-          ? `<span class="gate-badge">Cổng ${gateNum}</span>` 
-          : '';
+        
 
         if (sp.type === 'start') {
           cell.innerHTML = `
             <div class="cell-header">
-              <span class="cell-num">${numStr}${gateBadge}</span>
+              <span class="cell-num">${numStr}</span>
               <span class="cell-xp">+${sp.xp} XP</span>
             </div>
             <div class="cell-symbol" style="font-size:1.3rem;">🏁 XUẤT PHÁT</div>
@@ -1274,7 +1260,7 @@
         } else {
           cell.innerHTML = `
             <div class="cell-header">
-              <span class="cell-num">${numStr}${gateBadge}</span>
+              <span class="cell-num">${numStr}</span>
               <span class="cell-xp">+${sp.xp} XP</span>
             </div>
             <div class="cell-z">Z = ${sp.z}</div>
